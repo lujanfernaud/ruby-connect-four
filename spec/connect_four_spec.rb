@@ -34,8 +34,8 @@ describe Board do
     raise unless Board.new.grid
   end
 
-  describe ".print" do
-    it "prints the board" do
+  describe "#print" do
+    it "exists" do
       expect(Board.new).to respond_to(:print)
     end
   end
@@ -67,5 +67,11 @@ describe Game do
     raise unless Game.new.human1.board.grid
     raise unless Game.new.human2.board.grid
     raise unless Game.new.computer.board.grid
+  end
+
+  describe "#setup" do
+    it "exists" do
+      expect(Game.new).to respond_to(:setup)
+    end
   end
 end

@@ -56,4 +56,8 @@ class Game
     @human2   = Player.new(name: "Human 2", mark: "O", board: board)
     @computer = Computer.new(mark: "O", board: board)
   end
+
+  def setup
+    board.print
+  end
 end
