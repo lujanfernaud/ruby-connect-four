@@ -15,3 +15,14 @@ class Computer
     @mark = mark
   end
 end
+
+class Board
+  attr_accessor :grid
+
+  def initialize
+    @grid = { a: ["-", "-", "-", "-"],
+              b: ["-", "-", "-", "-"],
+              c: ["-", "-", "-", "-"],
+              d: ["-", "-", "-", "-"] }
+  end
+end

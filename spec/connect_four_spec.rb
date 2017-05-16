@@ -20,3 +20,9 @@ describe Computer do
     raise unless Computer.new(mark: "O").mark == "O"
   end
 end
+
+describe Board do
+  it "has a grid" do
+    raise unless Board.new.grid
+  end
+end
