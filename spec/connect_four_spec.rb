@@ -26,3 +26,26 @@ describe Board do
     raise unless Board.new.grid
   end
 end
+
+describe Game do
+  it "has a board" do
+    raise unless Game.new.board
+  end
+
+  it "has number of players" do
+    raise unless Game.new.players
+  end
+
+  it "has one player by default" do
+    expect(Game.new.players).to eql(1)
+  end
+
+  it "has human players" do
+    raise unless Game.new.human1
+    raise unless Game.new.human2
+  end
+
+  it "has a computer player" do
+    raise unless Game.new.computer
+  end
+end

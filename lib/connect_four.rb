@@ -26,3 +26,16 @@ class Board
               d: ["-", "-", "-", "-"] }
   end
 end
+
+class Game
+  attr_accessor :players, :human1, :human2
+  attr_reader   :board, :computer
+
+  def initialize
+    @board    = Board.new
+    @players  = 1
+    @human1   = Player.new(name: "Human 1", mark: "X")
+    @human2   = Player.new(name: "Human 2", mark: "O")
+    @computer = Computer.new(mark: "O")
+  end
+end
