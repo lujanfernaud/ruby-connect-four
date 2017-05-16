@@ -9,6 +9,10 @@ describe Player do
   it "has a mark" do
     raise unless Player.new(name: "Matz", mark: "X").mark == "X"
   end
+
+  it "knows about board" do
+    raise unless Player.new(name: "Matz", mark: "X").board
+  end
 end
 
 describe Computer do
@@ -18,6 +22,10 @@ describe Computer do
 
   it "has a mark" do
     raise unless Computer.new(mark: "O").mark == "O"
+  end
+
+  it "knows about board" do
+    raise unless Computer.new(mark: "O").board
   end
 end
 

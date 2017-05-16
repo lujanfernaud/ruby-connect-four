@@ -1,18 +1,21 @@
 class Player
-  attr_reader :name, :mark
+  attr_reader :name, :mark, :board
 
-  def initialize(name:, mark:)
-    @name = name
-    @mark = mark
+  def initialize(name:, mark:, board: [])
+    @name  = name
+    @mark  = mark
+    @board = board
   end
 end
 
 class Computer
   attr_accessor :name, :mark
+  attr_reader   :board
 
-  def initialize(mark:)
-    @name = "Computer"
-    @mark = mark
+  def initialize(mark:, board: [])
+    @name  = "Computer"
+    @mark  = mark
+    @board = board
   end
 end
 
