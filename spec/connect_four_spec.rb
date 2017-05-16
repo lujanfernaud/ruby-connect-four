@@ -74,4 +74,12 @@ describe Game do
       expect(Game.new).to respond_to(:setup)
     end
   end
+
+  describe "#set_players" do
+    it "sets number of players" do
+      game  = Game.new
+      input = game.set_players
+      expect(input).to eql(game.players)
+    end
+  end
 end

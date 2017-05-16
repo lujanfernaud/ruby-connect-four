@@ -59,5 +59,12 @@ class Game
 
   def setup
     board.print_board
+    set_players
+  end
+
+  def set_players
+    puts "Choose players, 1 or 2?"
+    input = STDIN.gets.chomp
+    self.players = input
   end
 end
