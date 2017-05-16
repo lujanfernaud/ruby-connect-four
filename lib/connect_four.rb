@@ -28,6 +28,21 @@ class Board
               c: ["-", "-", "-", "-"],
               d: ["-", "-", "-", "-"] }
   end
+
+  def print
+    system "clear" or system "cls"
+    puts "\n"
+    puts "     1 | 2 | 3 | 4 "
+    puts "   -----------------"
+    puts " a | #{grid[:a][0]}   #{grid[:a][1]}   #{grid[:a][2]}   #{grid[:a][3]} |"
+    puts "   ----------------"
+    puts " b | #{grid[:b][0]}   #{grid[:b][1]}   #{grid[:b][2]}   #{grid[:b][3]} |"
+    puts "   ----------------"
+    puts " c | #{grid[:c][0]}   #{grid[:c][1]}   #{grid[:c][2]}   #{grid[:c][3]} |"
+    puts "   ----------------"
+    puts " d | #{grid[:d][0]}   #{grid[:d][1]}   #{grid[:d][2]}   #{grid[:d][3]} |"
+    puts "\n"
+  end
 end
 
 class Game

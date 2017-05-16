@@ -33,6 +33,12 @@ describe Board do
   it "has a grid" do
     raise unless Board.new.grid
   end
+
+  describe ".print" do
+    it "prints the board" do
+      expect(Board.new).to respond_to(:print)
+    end
+  end
 end
 
 describe Game do
