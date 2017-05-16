@@ -34,9 +34,9 @@ describe Board do
     raise unless Board.new.grid
   end
 
-  describe "#print" do
+  describe "#print_board" do
     it "exists" do
-      expect(Board.new).to respond_to(:print)
+      expect(Board.new).to respond_to(:print_board)
     end
   end
 end

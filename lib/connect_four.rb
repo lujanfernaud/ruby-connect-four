@@ -29,7 +29,7 @@ class Board
               d: ["-", "-", "-", "-"] }
   end
 
-  def print
+  def print_board
     system "clear" or system "cls"
     puts "\n"
     puts "     1 | 2 | 3 | 4 "
@@ -58,6 +58,6 @@ class Game
   end
 
   def setup
-    board.print
+    board.print_board
   end
 end
