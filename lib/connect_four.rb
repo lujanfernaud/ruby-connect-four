@@ -6,3 +6,12 @@ class Player
     @mark = mark
   end
 end
+
+class Computer
+  attr_accessor :name, :mark
+
+  def initialize(mark:)
+    @name = "Computer"
+    @mark = mark
+  end
+end
