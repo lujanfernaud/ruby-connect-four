@@ -37,8 +37,8 @@ class Game
   def initialize
     @board    = Board.new
     @players  = 1
-    @human1   = Player.new(name: "Human 1", mark: "X")
-    @human2   = Player.new(name: "Human 2", mark: "O")
-    @computer = Computer.new(mark: "O")
+    @human1   = Player.new(name: "Human 1", mark: "X", board: board)
+    @human2   = Player.new(name: "Human 2", mark: "O", board: board)
+    @computer = Computer.new(mark: "O", board: board)
   end
 end

@@ -56,4 +56,10 @@ describe Game do
   it "has a computer player" do
     raise unless Game.new.computer
   end
+
+  it "sends board to all players" do
+    raise unless Game.new.human1.board.grid
+    raise unless Game.new.human2.board.grid
+    raise unless Game.new.computer.board.grid
+  end
 end
