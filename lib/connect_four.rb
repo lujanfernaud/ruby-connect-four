@@ -40,13 +40,13 @@ class Board
     puts "\n"
     puts "     1 | 2 | 3 | 4 "
     puts "   -----------------"
-    puts " a | #{grid[:a][0]}   #{grid[:a][1]}   #{grid[:a][2]}   #{grid[:a][3]} |"
+    puts " a | #{grid[0][0]}   #{grid[0][1]}   #{grid[0][2]}   #{grid[0][3]} |"
     puts "   ----------------"
-    puts " b | #{grid[:b][0]}   #{grid[:b][1]}   #{grid[:b][2]}   #{grid[:b][3]} |"
+    puts " b | #{grid[1][0]}   #{grid[1][1]}   #{grid[1][2]}   #{grid[1][3]} |"
     puts "   ----------------"
-    puts " c | #{grid[:c][0]}   #{grid[:c][1]}   #{grid[:c][2]}   #{grid[:c][3]} |"
+    puts " c | #{grid[2][0]}   #{grid[2][1]}   #{grid[2][2]}   #{grid[2][3]} |"
     puts "   ----------------"
-    puts " d | #{grid[:d][0]}   #{grid[:d][1]}   #{grid[:d][2]}   #{grid[:d][3]} |"
+    puts " d | #{grid[3][0]}   #{grid[3][1]}   #{grid[3][2]}   #{grid[3][3]} |"
     puts "\n"
   end
 
