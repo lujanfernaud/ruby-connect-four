@@ -90,6 +90,12 @@ describe Game do
     end
   end
 
+  describe "#start" do
+    it "exists" do
+      expect(@game).to respond_to(:start)
+    end
+  end
+
   describe "#set_players" do
     it "sets number of players" do
       input = @game.set_players

@@ -62,6 +62,10 @@ class Game
     board.print_board
     set_players
     ask_player_names if players == 2
+    start
+  end
+
+  def start
   end
 
   def set_players
