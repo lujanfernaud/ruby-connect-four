@@ -7,6 +7,11 @@ class Player
     @mark  = mark
     @board = board
   end
+
+  def throw(column)
+    raise ArgumentError unless column.is_a?(Integer)
+    board.position_mark_in_column(column, mark)
+  end
 end
 
 class Computer
@@ -24,10 +29,10 @@ class Board
   attr_accessor :grid
 
   def initialize
-    @grid = { a: ["-", "-", "-", "-"],
-              b: ["-", "-", "-", "-"],
-              c: ["-", "-", "-", "-"],
-              d: ["-", "-", "-", "-"] }
+    @grid = [["-", "-", "-", "-"],
+             ["-", "-", "-", "-"],
+             ["-", "-", "-", "-"],
+             ["-", "-", "-", "-"]]
   end
 
   def print_board
@@ -43,6 +48,14 @@ class Board
     puts "   ----------------"
     puts " d | #{grid[:d][0]}   #{grid[:d][1]}   #{grid[:d][2]}   #{grid[:d][3]} |"
     puts "\n"
+  end
+
+  def position_mark_in_column(column, mark)
+    grid.reverse.each do |row|
+      next if row[column - 1] != "-"
+      row[column - 1] = mark
+      break
+    end
   end
 end
 

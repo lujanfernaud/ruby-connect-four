@@ -2,7 +2,10 @@ require "./lib/connect_four"
 
 describe Player do
   before :all do
-    @player = Player.new(name: "Matz", mark: "X")
+    @game   = Game.new
+    @player = @game.human1
+    @player.name = "Matz"
+    @player.mark = "X"
   end
 
   it "has a name" do
@@ -15,6 +18,27 @@ describe Player do
 
   it "knows about board" do
     expect(@player).to respond_to(:board)
+  end
+
+  describe "#throw" do
+    it "exists" do
+      expect(@player).to respond_to(:throw)
+    end
+
+    it "accepts one number as an argument" do
+      expect { @player.throw(2) }.not_to raise_error
+    end
+
+    it "raises ArgumentError if the paremeter is not an integer" do
+      expect { @player.throw("d2") }.to raise_error(ArgumentError)
+    end
+
+    it "places mark on the grid" do
+      @player.board.grid[3][1] = "X"
+      @player.board.grid[2][1] = "X"
+      @player.board.position_mark_in_column(2, "X")
+      expect(@player.board.grid[1][1]).to eql("X")
+    end
   end
 end
 
@@ -48,6 +72,22 @@ describe Board do
   describe "#print_board" do
     it "exists" do
       expect(@board).to respond_to(:print_board)
+    end
+  end
+
+  describe "#position_mark_in_column" do
+    it "exists" do
+      expect(@board).to respond_to(:position_mark_in_column)
+    end
+
+    it "takes position and mark as arguments" do
+      expect { @board.position_mark_in_column(2, "X") }.not_to raise_error
+    end
+
+    it "checks what position is available in the column and puts mark" do
+      @board.grid[3][1] = "X"
+      @board.position_mark_in_column(2, "X")
+      expect(@board.grid[2][1]).to eql("X")
     end
   end
 end
