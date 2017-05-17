@@ -1,5 +1,6 @@
 class Player
-  attr_reader :name, :mark, :board
+  attr_accessor :name, :mark
+  attr_reader   :board
 
   def initialize(name:, mark:, board: [])
     @name  = name
@@ -60,11 +61,21 @@ class Game
   def setup
     board.print_board
     set_players
+    ask_player_names if players == 2
   end
 
   def set_players
     puts "Choose players, 1 or 2?"
     input = STDIN.gets.chomp
     self.players = input
+  end
+
+  def ask_player_names
+    board.print_board
+    puts "Player 1 name:"
+    human1.name = STDIN.gets.chomp
+    board.print_board
+    puts "Player 2 name:"
+    human2.name = STDIN.gets.chomp
   end
 end
