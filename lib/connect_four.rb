@@ -74,7 +74,7 @@ class Game
   def setup
     board.print_board
     set_players
-    ask_player_names if players == 2
+    ask_players_names if players == 2
     start
   end
 
@@ -87,7 +87,7 @@ class Game
     self.players = input
   end
 
-  def ask_player_names
+  def ask_players_names
     board.print_board
     puts "Player 1 name:"
     human1.name = STDIN.gets.chomp

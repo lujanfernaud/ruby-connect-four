@@ -144,9 +144,9 @@ describe Game do
     end
   end
 
-  describe "#ask_player_names" do
+  describe "#ask_players_names" do
     it "asks and sets player names" do
-      @game.ask_player_names
+      @game.ask_players_names
       expect(@game.human1.name).not_to eql("Human 1")
       expect(@game.human2.name).not_to eql("Human 2")
     end
