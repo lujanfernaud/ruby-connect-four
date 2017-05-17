@@ -81,6 +81,15 @@ class Game
   def start
   end
 
+  def introduce_position(player = computer)
+    case players
+    when 1 then puts "Introduce a position:"
+    when 2 then puts "#{player.name}, introduce a position:"
+    end
+
+    STDIN.gets.chomp.to_i
+  end
+
   def set_players
     puts "Choose players, 1 or 2?"
     input = STDIN.gets.chomp

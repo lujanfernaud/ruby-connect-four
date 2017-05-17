@@ -137,6 +137,24 @@ describe Game do
     end
   end
 
+  describe "#introduce_position" do
+    context "when there is only 1 player" do
+      it "says 'Please introduce a position:'" do
+        expect(STDOUT).to receive(:puts).with("Introduce a position:")
+        @game.introduce_position
+      end
+    end
+
+    context "when there are 2 players" do
+      it "says 'Sandi, introduce a position:'" do
+        @game.players = 2
+        @game.human2.name = "Sandi"
+        expect(STDOUT).to receive(:puts).with("Sandi, introduce a position:")
+        @game.introduce_position(@game.human2)
+      end
+    end
+  end
+
   describe "#set_players" do
     it "sets number of players" do
       input = @game.set_players
