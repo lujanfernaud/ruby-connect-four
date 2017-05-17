@@ -6,15 +6,15 @@ describe Player do
   end
 
   it "has a name" do
-    raise unless @player.name == "Matz"
+    expect(@player.name).to eql("Matz")
   end
 
   it "has a mark" do
-    raise unless @player.mark == "X"
+    expect(@player.mark).to eql("X")
   end
 
   it "knows about board" do
-    raise unless @player.board
+    expect(@player).to respond_to(:board)
   end
 end
 
@@ -24,15 +24,15 @@ describe Computer do
   end
 
   it "has a name" do
-    raise unless @computer.name == "Computer"
+    expect(@computer.name).to eql("Computer")
   end
 
   it "has a mark" do
-    raise unless @computer.mark == "O"
+    expect(@computer.mark).to eql("O")
   end
 
   it "knows about board" do
-    raise unless @computer.board
+    expect(@computer).to respond_to(:board)
   end
 end
 
@@ -58,11 +58,11 @@ describe Game do
   end
 
   it "has a board" do
-    raise unless @game.board
+    expect(@game.board).to be_a(Board)
   end
 
   it "has number of players" do
-    raise unless @game.players
+    expect(@game.players).to be_an(Integer)
   end
 
   it "has one player by default" do
@@ -70,18 +70,19 @@ describe Game do
   end
 
   it "has human players" do
-    raise unless @game.human1
-    raise unless @game.human2
+    expect(@game.human1).to be_a(Player)
+    expect(@game.human2).to be_a(Player)
   end
 
   it "has a computer player" do
-    raise unless @game.computer
+    expect(@game.computer).to be_a(Computer)
   end
 
   it "sends board to all players" do
-    raise unless @game.human1.board.grid
-    raise unless @game.human2.board.grid
-    raise unless @game.computer.board.grid
+    players = [@game.human1, @game.human2, @game.computer]
+    players.each do |player|
+      expect(player.board).to respond_to(:grid)
+    end
   end
 
   describe "#setup" do
