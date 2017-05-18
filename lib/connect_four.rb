@@ -27,6 +27,7 @@ end
 
 class Board
   attr_accessor :grid
+  attr_reader   :reset
 
   def initialize
     create_grid
@@ -170,6 +171,19 @@ class Game
     case players
     when 1 then puts "You WIN!"
     when 2 then puts "#{last_player.name} WINS!"
+    end
+  end
+
+  def try_again
+    case STDIN.gets.chomp.downcase
+    when "y"
+      board.reset
+      start
+    when "n"
+      exit_game
+    else
+      board.print_board
+      puts "Please type 'y' or 'n'."
     end
   end
 

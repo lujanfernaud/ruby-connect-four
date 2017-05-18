@@ -271,9 +271,25 @@ describe Game do
   end
 
   describe "#try_again" do
-    skip
-    it "resets board and calls Game#start if 'y'"
-    it "calls Game#exit_game if 'n'"
+    it "calls Board#reset and Game#start if 'y'" do
+      allow(STDIN).to receive(:gets).and_return("y")
+      expect(@game.board).to receive(:reset)
+      expect(@game).to receive(:start)
+      @game.try_again
+    end
+
+    it "calls Game#exit_game if 'n'" do
+      allow(STDIN).to receive(:gets).and_return("n")
+      expect(@game).to receive(:exit_game)
+      @game.try_again
+    end
+
+    it "asks to type 'y' or 'n' if none of them was typed" do
+      allow(STDIN).to receive(:gets).and_return("b")
+      expect(@game.board).to receive(:print_board)
+      expect(STDOUT).to receive(:puts).with("Please type 'y' or 'n'.")
+      @game.try_again
+    end
   end
 
   describe "#exit_game" do
