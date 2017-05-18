@@ -14,7 +14,7 @@ class Player
   end
 end
 
-class Computer
+class Computer < Player
   attr_accessor :name, :mark
   attr_reader   :board
 
@@ -88,12 +88,24 @@ class Game
     loop do
       board.print_board
       first_turn
+      second_turn
     end
   end
 
   def first_turn
     human1.throw(introduce_position(human1))
     check_for_winner(human1)
+  end
+
+  def second_turn
+    case players
+    when 1 then
+      computer.throw(introduce_position(computer))
+      check_for_winner(computer)
+    when 2 then
+      human2.throw(introduce_position(human2))
+      check_for_winner(human2)
+    end
   end
 
   def introduce_position(player = computer)
