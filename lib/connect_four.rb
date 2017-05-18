@@ -87,9 +87,13 @@ class Game
   def start
     loop do
       board.print_board
-      human1.throw(introduce_position(human1))
-      check_for_winner(human1)
+      first_turn
     end
+  end
+
+  def first_turn
+    human1.throw(introduce_position(human1))
+    check_for_winner(human1)
   end
 
   def introduce_position(player = computer)
