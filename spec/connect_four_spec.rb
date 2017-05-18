@@ -169,4 +169,50 @@ describe Game do
       expect(@game.human2.name).not_to eql("Human 2")
     end
   end
+
+  describe "#check_for_winner" do
+    it "raises ArgumentError if no argument is given" do
+      expect { @game.check_for_winner }.to raise_error(ArgumentError)
+    end
+
+    it "raises ArgumentError if argument is not a Player object" do
+      expect { @game.check_for_winner("Sandi") }.to raise_error(ArgumentError)
+    end
+
+    it "takes a Player as an argument" do
+      expect { @game.check_for_winner(@game.human1) }.not_to raise_error
+    end
+  end
+
+  describe "#check_rows" do
+    it "returns 'You WIN!' if you are the winner" do
+      @game.board.grid = [["-", "-", "-", "-"],
+                          ["-", "-", "O", "O"],
+                          ["X", "X", "X", "X"],
+                          ["O", "O", "O", "X"]]
+      expect(@game).to receive(:the_winner_is).with(@game.human1)
+      @game.check_rows(@game.human1)
+    end
+  end
+
+  describe "#the_winner_is" do
+    context "when there is 1 player" do
+      it "returns 'You WIN!" do
+        expect(STDOUT).to receive(:puts).with("You WIN!")
+        @game.the_winner_is(@game.human1)
+      end
+    end
+
+    context "when there are 2 players" do
+      it "returns 'Sandi WINS!'" do
+        @game.players = 2
+        @game.human2.name = "Sandi"
+        expect(STDOUT).to receive(:puts).with("Sandi WINS!")
+        @game.the_winner_is(@game.human2)
+      end
+    end
+  end
+
+  describe "#check_columns"
+  describe "#check_diagonals"
 end

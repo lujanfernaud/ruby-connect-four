@@ -60,8 +60,8 @@ class Board
 end
 
 class Game
-  attr_accessor :players, :human1, :human2
-  attr_reader   :board, :computer
+  attr_accessor :board, :players, :human1, :human2
+  attr_reader   :computer
 
   def initialize
     @board    = Board.new
@@ -79,6 +79,10 @@ class Game
   end
 
   def start
+    loop do
+      board.print_board
+      human1.throw(introduce_position(human1))
+    end
   end
 
   def introduce_position(player = computer)
@@ -103,5 +107,23 @@ class Game
     board.print_board
     puts "Player 2 name:"
     human2.name = STDIN.gets.chomp
+  end
+
+  def check_for_winner(last_player)
+    raise ArgumentError unless last_player.is_a?(Player)
+    check_rows(last_player)
+  end
+
+  def check_rows(last_player)
+    board.grid.each do |row|
+      the_winner_is(last_player) if row.all? { |mark| mark == last_player.mark }
+    end
+  end
+
+  def the_winner_is(last_player)
+    case players
+    when 1 then puts "You WIN!"
+    when 2 then puts "#{last_player.name} WINS!"
+    end
   end
 end
