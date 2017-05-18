@@ -29,10 +29,15 @@ class Board
   attr_accessor :grid
 
   def initialize
-    @grid = [["-", "-", "-", "-"],
-             ["-", "-", "-", "-"],
-             ["-", "-", "-", "-"],
-             ["-", "-", "-", "-"]]
+    create_grid
+  end
+
+  def create_grid
+    @grid = Array.new(4) { Array.new(4) { "-" } }
+  end
+
+  def reset
+    create_grid
   end
 
   def print_board

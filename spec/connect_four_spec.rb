@@ -90,6 +90,21 @@ describe Board do
       expect(@board.grid[2][1]).to eql("X")
     end
   end
+
+  describe "#reset" do
+    it "resets board" do
+      @board.grid = [["X", "X", "O", "-"],
+                     ["O", "X", "O", "O"],
+                     ["O", "X", "X", "X"],
+                     ["O", "X", "O", "X"]]
+      new_grid    = [["-", "-", "-", "-"],
+                     ["-", "-", "-", "-"],
+                     ["-", "-", "-", "-"],
+                     ["-", "-", "-", "-"]]
+      @board.reset
+      expect(@board.grid).to match(new_grid)
+    end
+  end
 end
 
 describe Game do
@@ -253,6 +268,12 @@ describe Game do
                           ["O", "X", "O", "X"]]
       expect(@game.there_is_no_winner).to eql(true)
     end
+  end
+
+  describe "#try_again" do
+    skip
+    it "resets board and calls Game#start if 'y'"
+    it "calls Game#exit_game if 'n'"
   end
 
   describe "#exit_game" do
