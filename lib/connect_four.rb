@@ -82,6 +82,7 @@ class Game
     loop do
       board.print_board
       human1.throw(introduce_position(human1))
+      check_for_winner(human1)
     end
   end
 
