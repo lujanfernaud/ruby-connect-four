@@ -99,10 +99,10 @@ class Game
 
   def second_turn
     case players
-    when 1 then
+    when 1
       computer.throw(introduce_position(computer))
       check_for_winner(computer)
-    when 2 then
+    when 2
       human2.throw(introduce_position(human2))
       check_for_winner(human2)
     end
@@ -119,7 +119,7 @@ class Game
 
   def set_players
     puts "Choose players, 1 or 2?"
-    input = STDIN.gets.chomp
+    input = STDIN.gets.chomp.to_i
     self.players = input
   end
 

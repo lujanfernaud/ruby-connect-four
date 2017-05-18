@@ -213,6 +213,7 @@ describe Game do
       it "says 'Please introduce a position:'" do
         @game.players = 1
         expect(STDOUT).to receive(:puts).with("Introduce a position:")
+        allow(STDIN).to receive(:gets).and_return("4")
         @game.introduce_position
       end
     end
@@ -222,15 +223,25 @@ describe Game do
         @game.players = 2
         @game.human2.name = "Sandi"
         expect(STDOUT).to receive(:puts).with("Sandi, introduce a position:")
+        allow(STDIN).to receive(:gets).and_return("3")
         @game.introduce_position(@game.human2)
       end
     end
   end
 
   describe "#set_players" do
-    it "sets number of players" do
-      input = @game.set_players
-      expect(input).to eql(@game.players)
+    it "sets number of players to 1" do
+      expect(STDOUT).to receive(:puts).with("Choose players, 1 or 2?")
+      allow(STDIN).to receive(:gets).and_return("1")
+      @game.set_players
+      expect(@game.players).to eql(1)
+    end
+
+    it "sets number of players to 2" do
+      expect(STDOUT).to receive(:puts).with("Choose players, 1 or 2?")
+      allow(STDIN).to receive(:gets).and_return("2")
+      @game.set_players
+      expect(@game.players).to eql(2)
     end
   end
 
