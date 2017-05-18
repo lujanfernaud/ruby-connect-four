@@ -120,6 +120,17 @@ class Game
     end
   end
 
+  def check_columns(last_player)
+    4.times do |column|
+      array = []
+      board.grid.each do |row|
+        array << true if row[column] == last_player.mark
+      end
+
+      return the_winner_is(last_player) if array.length == 4
+    end
+  end
+
   def the_winner_is(last_player)
     case players
     when 1 then puts "You WIN!"

@@ -185,7 +185,7 @@ describe Game do
   end
 
   describe "#check_rows" do
-    it "returns 'You WIN!' if you are the winner" do
+    it "returns 'You WIN!' if there is a four marks match in a row" do
       @game.board.grid = [["-", "-", "-", "-"],
                           ["-", "-", "O", "O"],
                           ["X", "X", "X", "X"],
@@ -194,6 +194,19 @@ describe Game do
       @game.check_rows(@game.human1)
     end
   end
+
+  describe "#check_columns" do
+    it "returns 'You WIN! if there is a four marks match in a column" do
+      @game.board.grid = [["-", "X", "-", "-"],
+                          ["-", "X", "O", "O"],
+                          ["O", "X", "O", "X"],
+                          ["O", "X", "O", "X"]]
+      expect(@game).to receive(:the_winner_is).with(@game.human1)
+      @game.check_columns(@game.human1)
+    end
+  end
+
+  describe "#check_diagonals"
 
   describe "#the_winner_is" do
     context "when there is 1 player" do
@@ -212,7 +225,4 @@ describe Game do
       end
     end
   end
-
-  describe "#check_columns"
-  describe "#check_diagonals"
 end
