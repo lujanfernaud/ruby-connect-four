@@ -205,6 +205,19 @@ describe Game do
     it "takes a Player as an argument" do
       expect { @game.check_for_winner(@game.human1) }.not_to raise_error
     end
+
+    it "checks for winner and calls #finish_game" do
+      @game.board.grid = [["X", "X", "O", "X"],
+                          ["O", "O", "O", "O"],
+                          ["O", "X", "X", "X"],
+                          ["O", "X", "O", "X"]]
+
+      expect(@game).to receive(:check_rows)
+      expect(@game).to receive(:check_columns)
+      expect(@game).to receive(:check_diagonals)
+      expect(@game).to receive(:finish_game)
+      @game.check_for_winner(@game.human1)
+    end
   end
 
   describe "#check_rows" do

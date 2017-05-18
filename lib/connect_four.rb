@@ -121,6 +121,8 @@ class Game
     check_rows(last_player)
     check_columns(last_player)
     check_diagonals(last_player)
+
+    finish_game if there_is_no_winner
   end
 
   def check_rows(last_player)
