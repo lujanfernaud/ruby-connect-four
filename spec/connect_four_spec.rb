@@ -44,7 +44,8 @@ end
 
 describe Computer do
   before :all do
-    @computer = Computer.new(mark: "O")
+    @game     = Game.new
+    @computer = @game.computer
   end
 
   it "has a name" do
@@ -57,6 +58,19 @@ describe Computer do
 
   it "knows about board" do
     expect(@computer).to respond_to(:board)
+  end
+
+  it "has hability to throw" do
+    expect(@computer).to respond_to(:throw)
+  end
+
+  describe "#throw" do
+    it "places mark on the grid" do
+      @computer.board.grid[3][2] = "O"
+      @computer.board.grid[2][2] = "O"
+      @computer.board.position_mark_in_column(3, "O")
+      expect(@computer.board.grid[1][2]).to eql("O")
+    end
   end
 end
 
@@ -160,9 +174,44 @@ describe Game do
     end
   end
 
+  describe "#first_turn" do
+    it "gives turn to player and checks for winner" do
+      allow(STDIN).to receive(:gets).and_return("2")
+      expect(STDOUT).to receive(:puts)
+      expect(@game.human1).to receive(:throw)
+      expect(@game).to receive(:check_for_winner).with(@game.human1)
+      @game.first_turn
+    end
+  end
+
+  describe "#second_turn" do
+    context "when there is 1 player" do
+      it "gives turn to computer and checks for winner" do
+        @game.players = 1
+        expect(STDOUT).to receive(:puts)
+        allow(STDIN).to receive(:gets).and_return("3")
+        expect(@game.computer).to receive(:throw)
+        expect(@game).to receive(:check_for_winner).with(@game.computer)
+        @game.second_turn
+      end
+    end
+
+    context "when there are 2 players" do
+      it "gives turn to player 2 and checks for winner" do
+        @game.players = 2
+        expect(STDOUT).to receive(:puts)
+        allow(STDIN).to receive(:gets).and_return("1")
+        expect(@game.human2).to receive(:throw)
+        expect(@game).to receive(:check_for_winner).with(@game.human2)
+        @game.second_turn
+      end
+    end
+  end
+
   describe "#introduce_position" do
     context "when there is only 1 player" do
       it "says 'Please introduce a position:'" do
+        @game.players = 1
         expect(STDOUT).to receive(:puts).with("Introduce a position:")
         @game.introduce_position
       end
