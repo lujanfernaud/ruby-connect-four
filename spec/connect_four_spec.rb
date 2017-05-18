@@ -229,6 +229,7 @@ describe Game do
   describe "#the_winner_is" do
     context "when there is 1 player" do
       it "returns 'You WIN!" do
+        @game.players = 1
         expect(STDOUT).to receive(:puts).with("You WIN!")
         @game.the_winner_is(@game.human1)
       end
