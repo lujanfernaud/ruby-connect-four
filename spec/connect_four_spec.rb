@@ -144,6 +144,14 @@ describe Game do
     it "exists" do
       expect(@game).to respond_to(:setup)
     end
+
+    it "prints board, sets players, asks names if 2 and starts game" do
+      expect(@game.board).to receive(:print_board)
+      expect(@game).to receive(:set_players)
+      expect(@game).to receive(:ask_players_names) if @game.players == 2
+      expect(@game).to receive(:start)
+      @game.setup
+    end
   end
 
   describe "#start" do
