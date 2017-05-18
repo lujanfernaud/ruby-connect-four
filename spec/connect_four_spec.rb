@@ -355,13 +355,13 @@ describe Game do
     end
   end
 
-  describe "#there_is_no_winner" do
+  describe "#there_is_no_winner?" do
     it "returns 'true' if there are no more empty slots" do
       @game.board.grid = [["X", "X", "O", "X"],
                           ["O", "O", "O", "O"],
                           ["O", "X", "X", "X"],
                           ["O", "X", "O", "X"]]
-      expect(@game.there_is_no_winner).to eql(true)
+      expect(@game.there_is_no_winner?).to eql(true)
     end
   end
 
