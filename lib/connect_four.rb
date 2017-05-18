@@ -167,4 +167,10 @@ class Game
     when 2 then puts "#{last_player.name} WINS!"
     end
   end
+
+  def exit_game
+    system "clear" or system "cls"
+    puts "Thanks for playing. Hope you liked it!\n\n"
+    exit
+  end
 end

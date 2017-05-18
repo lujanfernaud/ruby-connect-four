@@ -254,4 +254,12 @@ describe Game do
       expect(@game.there_is_no_winner).to eql(true)
     end
   end
+
+  describe "#exit_game" do
+    it "returns 'Thanks for playing. Hope you liked it!'" do
+      expect(STDOUT).to receive(:puts)
+        .with("Thanks for playing. Hope you liked it!\n\n")
+      @game.exit_game
+    end
+  end
 end
