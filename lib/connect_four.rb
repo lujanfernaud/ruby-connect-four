@@ -131,6 +131,24 @@ class Game
     end
   end
 
+  def check_diagonals(last_player)
+    grid = board.grid
+
+    2.times do
+      4.times do |column|
+        array = []
+        grid.each do |row|
+          array << true if row[column] == last_player.mark
+          column += 1
+        end
+
+        return the_winner_is(last_player) if array.length == 4
+      end
+
+      grid.reverse!
+    end
+  end
+
   def the_winner_is(last_player)
     case players
     when 1 then puts "You WIN!"

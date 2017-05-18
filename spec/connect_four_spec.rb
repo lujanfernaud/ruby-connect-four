@@ -206,7 +206,25 @@ describe Game do
     end
   end
 
-  describe "#check_diagonals"
+  describe "#check_diagonals" do
+    it "returns 'You WIN!' if there is a diagonal match (top to bottom)" do
+      @game.board.grid = [["X", "X", "O", "-"],
+                          ["O", "X", "O", "O"],
+                          ["O", "X", "X", "X"],
+                          ["O", "X", "O", "X"]]
+      expect(@game).to receive(:the_winner_is).with(@game.human1)
+      @game.check_diagonals(@game.human1)
+    end
+
+    it "returns 'You WIN!' if there is a diagonal match (bottom to top)" do
+      @game.board.grid = [["X", "X", "O", "-"],
+                          ["O", "X", "O", "O"],
+                          ["O", "X", "X", "X"],
+                          ["O", "X", "O", "X"]]
+      expect(@game).to receive(:the_winner_is).with(@game.human1)
+      @game.check_diagonals(@game.human1)
+    end
+  end
 
   describe "#the_winner_is" do
     context "when there is 1 player" do
