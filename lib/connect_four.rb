@@ -167,6 +167,11 @@ class Game
     array.none? { |value| value == "-" }
   end
 
+  def finish_game
+    puts "There's no winner. Try again? (Y/N)"
+    try_again
+  end
+
   def the_winner_is(last_player)
     case players
     when 1 then puts "You WIN!"

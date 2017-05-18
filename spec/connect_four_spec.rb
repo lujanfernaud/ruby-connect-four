@@ -278,6 +278,15 @@ describe Game do
     end
   end
 
+  describe "#finish_game" do
+    it "prints 'There's no winner. Try again? (Y/N)' and calls #try_again" do
+      expect(STDOUT).to receive(:puts)
+        .with("There's no winner. Try again? (Y/N)")
+      expect(@game).to receive(:try_again)
+      @game.finish_game
+    end
+  end
+
   describe "#try_again" do
     it "calls Board#reset and Game#start if 'y'" do
       allow(STDIN).to receive(:gets).and_return("y")
