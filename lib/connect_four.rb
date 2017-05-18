@@ -189,9 +189,7 @@ class Game
   end
 
   def there_is_no_winner?
-    array = []
-    board.grid.each { |row| row.each { |value| array << value } }
-    array.none? { |value| value == "-" }
+    board.grid.flatten.none? { |value| value == "-" }
   end
 
   def finish_game
