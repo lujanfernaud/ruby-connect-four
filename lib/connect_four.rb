@@ -112,6 +112,8 @@ class Game
   def check_for_winner(last_player)
     raise ArgumentError unless last_player.is_a?(Player)
     check_rows(last_player)
+    check_columns(last_player)
+    check_diagonals(last_player)
   end
 
   def check_rows(last_player)
@@ -150,6 +152,12 @@ class Game
 
       return the_winner_is(last_player) if array.length == 4
     end
+  end
+
+  def there_is_no_winner
+    array = []
+    board.grid.each { |row| row.each { |value| array << value } }
+    array.none? { |value| value == "-" }
   end
 
   def the_winner_is(last_player)
