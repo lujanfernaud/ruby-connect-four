@@ -124,9 +124,17 @@ class Game
   end
 
   def ask_players_names
+    ask_human1_name
+    ask_human2_name
+  end
+
+  def ask_human1_name
     board.print_board
     puts "Player 1 name:"
     human1.name = STDIN.gets.chomp
+  end
+
+  def ask_human2_name
     board.print_board
     puts "Player 2 name:"
     human2.name = STDIN.gets.chomp

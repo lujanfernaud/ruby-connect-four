@@ -246,10 +246,24 @@ describe Game do
   end
 
   describe "#ask_players_names" do
-    it "asks and sets player names" do
-      @game.ask_players_names
-      expect(@game.human1.name).not_to eql("Human 1")
-      expect(@game.human2.name).not_to eql("Human 2")
+    describe "#ask_human1_name" do
+      it "asks and sets human1 name" do
+        expect(@game.board).to receive(:print_board)
+        expect(STDOUT).to receive(:puts).with("Player 1 name:")
+        allow(STDIN).to receive(:gets).and_return("Matz")
+        @game.ask_human1_name
+        expect(@game.human1.name).to eql("Matz")
+      end
+    end
+
+    describe "#ask_human2_name" do
+      it "asks and sets human1 name" do
+        expect(@game.board).to receive(:print_board)
+        expect(STDOUT).to receive(:puts).with("Player 2 name:")
+        allow(STDIN).to receive(:gets).and_return("Sandi")
+        @game.ask_human2_name
+        expect(@game.human2.name).to eql("Sandi")
+      end
     end
   end
 
