@@ -135,17 +135,20 @@ class Game
     grid = board.grid
 
     2.times do
-      4.times do |column|
-        array = []
-        grid.each do |row|
-          array << true if row[column] == last_player.mark
-          column += 1
-        end
+      check_marks_in_diagonal(grid, last_player)
+      grid.reverse!
+    end
+  end
 
-        return the_winner_is(last_player) if array.length == 4
+  def check_marks_in_diagonal(grid, last_player)
+    4.times do |column|
+      array = []
+      grid.each do |row|
+        array << true if row[column] == last_player.mark
+        column += 1
       end
 
-      grid.reverse!
+      return the_winner_is(last_player) if array.length == 4
     end
   end
 
