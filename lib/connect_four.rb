@@ -35,14 +35,14 @@ class Computer < Player
 
   def choose_location
     3.times do |i|
-      match_in_rows = check_rows(iteration: i)
-      return match_in_rows if match_in_rows
+      matches = []
+      matches << check_rows(iteration: i)
+      matches << check_columns(iteration: i)
+      matches << check_diagonals(iteration: i)
+      good_match = proc { |m| m && board.position_available?(m) }
 
-      match_in_columns = check_columns(iteration: i)
-      return match_in_columns if match_in_columns
-
-      match_in_diagonals = check_diagonals(iteration: i)
-      return match_in_diagonals if match_in_diagonals
+      location = matches.select(&good_match).first
+      return location if location
     end
 
     choose_random_location
@@ -444,4 +444,4 @@ class Game
   end
 end
 
-Game.new.setup
+# Game.new.setup
