@@ -682,18 +682,31 @@ describe Game do
 
   describe "#the_winner_is" do
     context "when there is 1 player" do
-      it "returns 'You WIN!" do
+      it "returns 'You WIN! Try again? (y/n)'" do
         @game.players = 1
-        expect(STDOUT).to receive(:puts).with("You WIN!")
+        @game.human1.name = "Human 1"
+        expect(STDOUT).to receive(:puts).with("You WIN! Try again? (y/n)")
+        expect(@game).to receive(:try_again)
         @game.the_winner_is(@game.human1)
       end
     end
 
+    context "when there is 1 player and computer wins" do
+      it "returns 'Computer WINS! Try again? (y/n)'" do
+        @game.players = 1
+        expect(STDOUT).to receive(:puts)
+          .with("Computer WINS! Try again? (y/n)")
+        expect(@game).to receive(:try_again)
+        @game.the_winner_is(@game.computer)
+      end
+    end
+
     context "when there are 2 players" do
-      it "returns 'Sandi WINS!'" do
+      it "returns 'Sandi WINS! Try again? (y/n)'" do
         @game.players = 2
         @game.human2.name = "Sandi"
-        expect(STDOUT).to receive(:puts).with("Sandi WINS!")
+        expect(STDOUT).to receive(:puts).with("Sandi WINS! Try again? (y/n)")
+        expect(@game).to receive(:try_again)
         @game.the_winner_is(@game.human2)
       end
     end

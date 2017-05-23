@@ -389,15 +389,17 @@ class Game
   end
 
   def finish_game
-    puts "There's no winner. Try again? (Y/N)"
+    puts "There's no winner. Try again? (y/n)"
     try_again
   end
 
   def the_winner_is(last_player)
-    case players
-    when 1 then puts "You WIN!"
-    when 2 then puts "#{last_player.name} WINS!"
+    case last_player.name
+    when "Computer" then puts "Computer WINS! Try again? (y/n)"
+    when "Human 1"  then puts "You WIN! Try again? (y/n)"
+    else puts "#{last_player.name} WINS! Try again? (y/n)"
     end
+    try_again
   end
 
   def try_again
@@ -419,3 +421,5 @@ class Game
     exit
   end
 end
+
+# Game.new.setup
