@@ -11,8 +11,7 @@ class Player
   end
 
   def throw(column)
-    raise ArgumentError unless column.is_a?(Integer)
-    board.position_mark_in_column(column, mark)
+    board.position_mark_in_column(column.to_i, mark)
   end
 end
 
@@ -310,7 +309,14 @@ class Game
     when 2 then puts "#{player.name}, introduce a position:"
     end
 
-    STDIN.gets.chomp.to_i
+    loop do
+      input = STDIN.gets.chomp
+      return input if input =~ /^[1-4]$/
+      exit_game    if input == "exit".downcase
+
+      board.print_board
+      puts "'#{input}' is not a correct position.\n\nIntroduce a position:"
+    end
   end
 
   def set_players
