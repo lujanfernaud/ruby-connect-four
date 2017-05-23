@@ -258,6 +258,15 @@ class Board
       break
     end
   end
+
+  def position_available?(column)
+    grid.map { |row| row[column - 1] }.any? { |slot| slot == "-" }
+  end
+
+  def the_position_is_not_available(column)
+    print_board
+    puts "The column #{column} is full.\n\n"
+  end
 end
 
 class Game

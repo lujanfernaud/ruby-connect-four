@@ -447,6 +447,37 @@ describe Board do
     end
   end
 
+  describe "#position_available?" do
+    before do
+      @board.grid = [["X", "-", "-", "-"],
+                     ["O", "-", "O", "O"],
+                     ["O", "X", "X", "X"],
+                     ["O", "X", "O", "X"]]
+    end
+
+    it "checks if there's an empty position in the column" do
+      column = 2
+      expect(@board.position_available?(column)).to eql(true)
+      @board.position_available?(column)
+    end
+
+    it "checks if there's an empty position in the column" do
+      column = 1
+      expect(@board.position_available?(column)).to eql(false)
+      @board.position_available?(column)
+    end
+  end
+
+  describe "#the_position_is_not_available" do
+    it "prints board and error message" do
+      column = 1
+      expect(@board).to receive(:print_board)
+      expect(STDOUT).to receive(:puts)
+        .with("The column #{column} is full.\n\n")
+      @board.the_position_is_not_available(column)
+    end
+  end
+
   describe "#reset" do
     it "resets board" do
       @board.grid = [["X", "X", "O", "-"],
