@@ -723,9 +723,9 @@ describe Game do
   end
 
   describe "#finish_game" do
-    it "prints 'There's no winner. Try again? (Y/N)' and calls #try_again" do
+    it "prints 'There's no winner. Try again? (y/n)' and calls #try_again" do
       expect(STDOUT).to receive(:puts)
-        .with("There's no winner. Try again? (Y/N)")
+        .with("There's no winner. Try again? (y/n)")
       expect(@game).to receive(:try_again)
       @game.finish_game
     end
