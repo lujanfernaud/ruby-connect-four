@@ -786,7 +786,7 @@ describe Game do
         .with("Thanks for playing. Hope you liked it!\n\n")
       expect(@game).to receive(:system).with("clear")
       expect(@game).to receive(:system).with("cls")
-      expect(@game.exit_game).to raise_error SystemExit
+      expect(@game).to receive(:exit)
       @game.exit_game
     end
   end
