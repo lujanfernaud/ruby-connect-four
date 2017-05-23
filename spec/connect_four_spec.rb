@@ -745,6 +745,7 @@ describe Game do
       it "returns 'You WIN! Try again? (y/n)'" do
         @game.players = 1
         @game.human1.name = "Human 1"
+        expect(@game.board).to receive(:print_board)
         expect(STDOUT).to receive(:puts).with("You WIN! Try again? (y/n)")
         expect(@game).to receive(:try_again)
         @game.the_winner_is(@game.human1)
@@ -754,6 +755,7 @@ describe Game do
     context "when there is 1 player and computer wins" do
       it "returns 'Computer WINS! Try again? (y/n)'" do
         @game.players = 1
+        expect(@game.board).to receive(:print_board)
         expect(STDOUT).to receive(:puts)
           .with("Computer WINS! Try again? (y/n)")
         expect(@game).to receive(:try_again)
@@ -765,6 +767,7 @@ describe Game do
       it "returns 'Sandi WINS! Try again? (y/n)'" do
         @game.players = 2
         @game.human2.name = "Sandi"
+        expect(@game.board).to receive(:print_board)
         expect(STDOUT).to receive(:puts).with("Sandi WINS! Try again? (y/n)")
         expect(@game).to receive(:try_again)
         @game.the_winner_is(@game.human2)
