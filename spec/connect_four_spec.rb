@@ -32,7 +32,7 @@ describe Player do
     it "places mark on the grid" do
       @player.board.grid[3][1] = "X"
       @player.board.grid[2][1] = "X"
-      @player.board.position_mark_in_column(2, "X")
+      @player.board.position_mark_in_column(2, @player)
       expect(@player.board.grid[1][1]).to eql("X")
     end
   end
@@ -417,8 +417,10 @@ describe Computer do
 end
 
 describe Board do
-  before :all do
-    @board = Board.new
+  before do
+    @game   = Game.new
+    @board  = Board.new(@game)
+    @player = @game.human1
   end
 
   it "has a grid" do
@@ -436,13 +438,13 @@ describe Board do
       expect(@board).to respond_to(:position_mark_in_column)
     end
 
-    it "takes position and mark as arguments" do
-      expect { @board.position_mark_in_column(2, "X") }.not_to raise_error
+    it "takes column and player as arguments" do
+      expect { @board.position_mark_in_column(2, @player) }.not_to raise_error
     end
 
     it "checks what position is available in the column and puts mark" do
       @board.grid[3][1] = "X"
-      @board.position_mark_in_column(2, "X")
+      @board.position_mark_in_column(2, @player)
       expect(@board.grid[2][1]).to eql("X")
     end
   end

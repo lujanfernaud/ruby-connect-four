@@ -11,7 +11,7 @@ class Player
   end
 
   def throw(column)
-    board.position_mark_in_column(column.to_i, mark)
+    board.position_mark_in_column(column.to_i, self)
   end
 end
 
@@ -30,7 +30,7 @@ class Computer < Player
     board.print_board
     puts "Computer turn..."
     sleep rand(1..2) * 0.5
-    board.position_mark_in_column(choose_location, mark)
+    board.position_mark_in_column(choose_location, self)
   end
 
   def choose_location
@@ -222,9 +222,10 @@ end
 
 class Board
   attr_accessor :grid
-  attr_reader   :reset
+  attr_reader   :reset, :game
 
-  def initialize
+  def initialize(game)
+    @game = game
     create_grid
   end
 
@@ -251,10 +252,15 @@ class Board
     puts "\n"
   end
 
-  def position_mark_in_column(column, mark)
+  def position_mark_in_column(column, player)
+    unless position_available?(column)
+      the_position_is_not_available(column)
+      player.throw(game.introduce_position(player))
+    end
+
     grid.reverse.each do |row|
       next if row[column - 1] != "-"
-      row[column - 1] = mark
+      row[column - 1] = player.mark
       break
     end
   end
@@ -274,7 +280,7 @@ class Game
   attr_reader   :computer
 
   def initialize
-    @board    = Board.new
+    @board    = Board.new(self)
     @players  = 1
     @human1   = Player.new(name: "Human 1", mark: "X", board: board)
     @human2   = Player.new(name: "Human 2", mark: "O", board: board)
