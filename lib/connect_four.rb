@@ -410,6 +410,7 @@ class Game
   end
 
   def finish_game
+    board.print_board
     puts "There's no winner. Try again? (y/n)"
     try_again
   end
@@ -444,4 +445,4 @@ class Game
   end
 end
 
-# Game.new.setup
+Game.new.setup
