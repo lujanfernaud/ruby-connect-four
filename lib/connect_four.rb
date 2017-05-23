@@ -389,7 +389,7 @@ class Game
 
     2.times do
       check_marks_in_diagonal(grid, last_player)
-      grid.reverse!
+      grid = grid.reverse
     end
   end
 
@@ -415,6 +415,7 @@ class Game
   end
 
   def the_winner_is(last_player)
+    board.print_board
     case last_player.name
     when "Computer" then puts "Computer WINS! Try again? (y/n)"
     when "Human 1"  then puts "You WIN! Try again? (y/n)"
@@ -443,4 +444,4 @@ class Game
   end
 end
 
-# Game.new.setup
+Game.new.setup
