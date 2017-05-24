@@ -1,4 +1,4 @@
-require "./lib/connect_four"
+require "spec_helper"
 
 describe Player do
   before :all do
