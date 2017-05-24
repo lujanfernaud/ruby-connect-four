@@ -45,8 +45,8 @@ class Game
     end
   end
 
-  def introduce_column(player = computer)
-    board.print_board
+  def introduce_column(player = computer, board: false)
+    board.print_board if board
     case players
     when 1 then puts "Introduce a column:"
     when 2 then puts "#{player.name}, introduce a column:"
