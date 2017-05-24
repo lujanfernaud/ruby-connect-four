@@ -46,6 +46,7 @@ class Game
   end
 
   def introduce_position(player = computer)
+    board.print_board
     case players
     when 1 then puts "Introduce a position:"
     when 2 then puts "#{player.name}, introduce a position:"
