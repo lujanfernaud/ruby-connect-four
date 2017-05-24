@@ -50,7 +50,10 @@ class Game
     when 1 then puts "Introduce a position:"
     when 2 then puts "#{player.name}, introduce a position:"
     end
+    check_inputted_position
+  end
 
+  def check_inputted_position
     loop do
       input = STDIN.gets.chomp
       return input if input =~ /^[1-4]$/
