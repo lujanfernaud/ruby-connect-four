@@ -13,10 +13,10 @@ class Computer < Player
     board.print_board
     puts "Computer turn..."
     sleep rand(1..2) * 0.5
-    board.position_mark_in_column(choose_location, self)
+    board.position_mark_in_column(choose_column, self)
   end
 
-  def choose_location
+  def choose_column
     3.times do |i|
       matches = []
       matches << check_rows(iteration: i)
@@ -24,11 +24,11 @@ class Computer < Player
       matches << check_diagonals(iteration: i)
       good_match = proc { |m| m && board.column_available?(m) }
 
-      location = matches.select(&good_match).first
-      return location if location
+      column = matches.select(&good_match).first
+      return column if column
     end
 
-    choose_random_location
+    choose_random_column
   end
 
   def check_rows(iteration:)
@@ -192,7 +192,7 @@ class Computer < Player
     computer_mark || no_human_mark
   end
 
-  def choose_random_location
+  def choose_random_column
     rows    = [*0..3]
     columns = [*0..3]
 
