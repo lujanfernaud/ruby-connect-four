@@ -87,40 +87,40 @@ describe Game do
     end
   end
 
-  describe "#introduce_position" do
+  describe "#introduce_column" do
     before do
       @game.players = 1
       expect(@game).to receive(:loop).and_yield
     end
 
     context "when there is only 1 player" do
-      it "says 'Please introduce a position:'" do
+      it "says 'Introduce a column:'" do
         expect(@game.board).to receive(:print_board)
-        expect(STDOUT).to receive(:puts).with("Introduce a position:")
+        expect(STDOUT).to receive(:puts).with("Introduce a column:")
         allow(STDIN).to receive(:gets).and_return("4")
-        @game.introduce_position(@game.human1)
+        @game.introduce_column(@game.human1)
       end
     end
 
     context "when there are 2 players" do
-      it "says 'Sandi, introduce a position:'" do
+      it "says 'Sandi, introduce a column:'" do
         @game.players = 2
         @game.human2.name = "Sandi"
         expect(@game.board).to receive(:print_board)
-        expect(STDOUT).to receive(:puts).with("Sandi, introduce a position:")
+        expect(STDOUT).to receive(:puts).with("Sandi, introduce a column:")
         allow(STDIN).to receive(:gets).and_return("3")
-        @game.introduce_position(@game.human2)
+        @game.introduce_column(@game.human2)
       end
     end
 
-    context "when input is not a position" do
+    context "when input is not a column" do
       it "says input is not correct" do
         expect(@game.board).to receive(:print_board).twice
         expect(STDOUT).to receive(:puts)
         allow(STDIN).to receive(:gets).and_return("5")
         expect(STDOUT).to receive(:puts)
-          .with("'5' is not a correct position.\n\nIntroduce a position:")
-        @game.introduce_position(@game.human1)
+          .with("'5' is not a correct column.\n\nIntroduce a column:")
+        @game.introduce_column(@game.human1)
       end
 
       it "says input is not correct" do
@@ -128,15 +128,15 @@ describe Game do
         expect(STDOUT).to receive(:puts)
         allow(STDIN).to receive(:gets).and_return("22")
         expect(STDOUT).to receive(:puts)
-          .with("'22' is not a correct position.\n\nIntroduce a position:")
-        @game.introduce_position(@game.human1)
+          .with("'22' is not a correct column.\n\nIntroduce a column:")
+        @game.introduce_column(@game.human1)
       end
 
       it "exits game if input is 'exit'" do
         expect(@game.board).to receive(:print_board).twice
         allow(STDIN).to receive(:gets).and_return("exit")
         expect(@game).to receive(:exit)
-        @game.introduce_position(@game.human1)
+        @game.introduce_column(@game.human1)
       end
     end
   end

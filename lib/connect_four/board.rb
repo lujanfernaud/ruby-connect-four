@@ -37,9 +37,9 @@ class Board
   end
 
   def position_mark_in_column(column, player)
-    unless position_available?(column)
-      the_position_is_not_available(column)
-      player.throw(game.introduce_position(player))
+    unless column_available?(column)
+      the_column_is_not_available(column)
+      player.throw(game.introduce_column(player))
     end
 
     grid.reverse.each do |row|
@@ -49,11 +49,11 @@ class Board
     end
   end
 
-  def position_available?(column)
+  def column_available?(column)
     grid.map { |row| row[column - 1] }.any? { |slot| slot == "-" }
   end
 
-  def the_position_is_not_available(column)
+  def the_column_is_not_available(column)
     print_board
     puts "The column #{column} is full.\n\n"
   end

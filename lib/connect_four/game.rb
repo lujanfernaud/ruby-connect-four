@@ -30,7 +30,7 @@ class Game
   end
 
   def first_turn
-    human1.throw(introduce_position(human1))
+    human1.throw(introduce_column(human1))
     check_for_winner(human1)
   end
 
@@ -40,28 +40,28 @@ class Game
       computer.throw
       check_for_winner(computer)
     when 2
-      human2.throw(introduce_position(human2))
+      human2.throw(introduce_column(human2))
       check_for_winner(human2)
     end
   end
 
-  def introduce_position(player = computer)
+  def introduce_column(player = computer)
     board.print_board
     case players
-    when 1 then puts "Introduce a position:"
-    when 2 then puts "#{player.name}, introduce a position:"
+    when 1 then puts "Introduce a column:"
+    when 2 then puts "#{player.name}, introduce a column:"
     end
-    check_inputted_position
+    check_inputted_column
   end
 
-  def check_inputted_position
+  def check_inputted_column
     loop do
       input = STDIN.gets.chomp
       return input if input =~ /^[1-4]$/
       exit_game    if input == "exit".downcase
 
       board.print_board
-      puts "'#{input}' is not a correct position.\n\nIntroduce a position:"
+      puts "'#{input}' is not a correct column.\n\nIntroduce a column:"
     end
   end
 

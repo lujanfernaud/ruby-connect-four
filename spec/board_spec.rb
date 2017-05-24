@@ -43,14 +43,14 @@ describe Board do
 
     it "checks if there's an empty position in the column" do
       column = 2
-      expect(@board.position_available?(column)).to eql(true)
-      @board.position_available?(column)
+      expect(@board.column_available?(column)).to eql(true)
+      @board.column_available?(column)
     end
 
     it "checks if there's an empty position in the column" do
       column = 1
-      expect(@board.position_available?(column)).to eql(false)
-      @board.position_available?(column)
+      expect(@board.column_available?(column)).to eql(false)
+      @board.column_available?(column)
     end
   end
 
@@ -60,7 +60,7 @@ describe Board do
       expect(@board).to receive(:print_board)
       expect(STDOUT).to receive(:puts)
         .with("The column #{column} is full.\n\n")
-      @board.the_position_is_not_available(column)
+      @board.the_column_is_not_available(column)
     end
   end
 

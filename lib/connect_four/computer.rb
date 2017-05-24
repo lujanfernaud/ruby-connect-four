@@ -22,7 +22,7 @@ class Computer < Player
       matches << check_rows(iteration: i)
       matches << check_columns(iteration: i)
       matches << check_diagonals(iteration: i)
-      good_match = proc { |m| m && board.position_available?(m) }
+      good_match = proc { |m| m && board.column_available?(m) }
 
       location = matches.select(&good_match).first
       return location if location
@@ -97,10 +97,10 @@ class Computer < Player
   end
 
   def check_diagonals(iteration:)
-    position = diagonal_from_left_bottom(iteration)
-    return position if position
-    position = diagonal_from_right_bottom(iteration)
-    return position if position
+    column = diagonal_from_left_bottom(iteration)
+    return column if column
+    column = diagonal_from_right_bottom(iteration)
+    return column if column
     false
   end
 
