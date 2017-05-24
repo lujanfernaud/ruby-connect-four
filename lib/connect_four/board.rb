@@ -18,6 +18,12 @@ class Board
   def print_board
     system "clear" or system "cls"
     puts "\n"
+    puts "   #################"
+    puts "   #               #"
+    puts "   #   CONNECT 4   #"
+    puts "   #               #"
+    puts "   #################"
+    puts "\n"
     puts "     1 | 2 | 3 | 4 "
     puts "   -----------------"
     puts " a | #{grid[0][0]}   #{grid[0][1]}   #{grid[0][2]}   #{grid[0][3]} |"
