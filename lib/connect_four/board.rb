@@ -39,7 +39,7 @@ class Board
   def position_mark_in_column(column, player)
     unless column_available?(column)
       the_column_is_not_available(column)
-      player.throw(game.introduce_column(player, board: false))
+      player.throw(game.introduce_column(player, print_board: false))
     end
 
     grid.reverse.each do |row|
