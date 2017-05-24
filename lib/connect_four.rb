@@ -340,8 +340,14 @@ class Game
 
   def set_players
     puts "Choose players, 1 or 2?"
-    input = STDIN.gets.chomp.to_i
-    self.players = input
+
+    loop do
+      input = STDIN.gets.chomp.to_i
+      return self.players = input if input.to_s =~ /^[1-2]$/
+
+      board.print_board
+      puts "1 or 2 players?"
+    end
   end
 
   def ask_players_names
@@ -449,4 +455,4 @@ class Game
   end
 end
 
-Game.new.setup
+# Game.new.setup

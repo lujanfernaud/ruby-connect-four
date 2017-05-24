@@ -634,6 +634,18 @@ describe Game do
   end
 
   describe "#set_players" do
+    before do
+      allow(@game).to receive(:loop).and_yield
+    end
+
+    it "input is not correct if it's not '1' or '2'" do
+      expect(STDOUT).to receive(:puts).with("Choose players, 1 or 2?")
+      allow(STDIN).to receive(:gets).and_return("0")
+      expect(@game.board).to receive(:print_board)
+      expect(STDOUT).to receive(:puts).with("1 or 2 players?")
+      @game.set_players
+    end
+
     it "sets number of players to 1" do
       expect(STDOUT).to receive(:puts).with("Choose players, 1 or 2?")
       allow(STDIN).to receive(:gets).and_return("1")
