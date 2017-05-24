@@ -129,7 +129,8 @@ class Computer < Player
     empty_slots    = array.join.count("-")
     column         = array.index("-")
 
-    return false unless empty_slots || supportive_column_left(column)
+    return false if empty_slots.zero?
+    return false unless supportive_column_left(column)
 
     return diagonal_attack(computer_marks, column, iteration) if human_marks.zero?
     return diagonal_defend(human_marks, column) if computer_marks.zero?
@@ -161,7 +162,8 @@ class Computer < Player
     empty_slots    = array.join.count("-")
     column         = array.count { |v| v == "-" } - 1
 
-    return false unless empty_slots || supportive_column_right(column)
+    return false if empty_slots.zero?
+    return false unless supportive_column_right(column)
 
     return diagonal_attack(computer_marks, column, iteration) if human_marks.zero?
     return diagonal_defend(human_marks, column) if computer_marks.zero?
