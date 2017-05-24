@@ -134,7 +134,10 @@ describe Game do
 
       it "exits game if input is 'exit'" do
         expect(@game.board).to receive(:print_board).twice
+        expect(STDOUT).to receive(:puts).thrice
         allow(STDIN).to receive(:gets).and_return("exit")
+        expect(@game).to receive(:system).with("clear")
+        expect(@game).to receive(:system).with("cls")
         expect(@game).to receive(:exit)
         @game.introduce_column(@game.human1)
       end
