@@ -22,8 +22,8 @@ class Computer < Player
       matches << check_rows(iteration: i)
       matches << check_columns(iteration: i)
       matches << check_diagonals
-      good_match = proc { |match| match && board.column_available?(match) }
 
+      good_match = proc { |match| match && board.column_available?(match) }
       column = matches.select(&good_match).first
       return column if column
     end
