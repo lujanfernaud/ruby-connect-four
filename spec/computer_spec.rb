@@ -247,8 +247,8 @@ describe Computer do
                          ["O", "O", "O", "X"],
                          ["X", "O", "X", "O"],
                          ["O", "X", "X", "X"]]
-          expect(@computer.check_diagonals(iteration: 0)).to eql(false)
-          @computer.check_diagonals(iteration: 0)
+          expect(@computer.check_diagonals).to eql(false)
+          @computer.check_diagonals
         end
       end
 
@@ -258,120 +258,120 @@ describe Computer do
                          ["O", "O", "X", "O"],
                          ["X", "X", "O", "O"],
                          ["O", "X", "X", "X"]]
-          expect(@computer.check_diagonals(iteration: 0)).to eql(false)
-          @computer.check_diagonals(iteration: 0)
+          expect(@computer.check_diagonals).to eql(false)
+          @computer.check_diagonals
         end
       end
 
-      context "with 2 human marks and 0 computer marks (from left bottom)" do
-        it "returns column + 1" do
+      context "with 2 human marks (from left bottom)" do
+        it "defends" do
           @board.grid = [["-", "-", "-", "-"],
                          ["O", "-", "-", "-"],
                          ["X", "X", "O", "O"],
                          ["X", "X", "O", "X"]]
-          expect(@computer.check_diagonals(iteration: 0)).to eql(3)
-          @computer.check_diagonals(iteration: 0)
+          expect(@computer.check_diagonals).to eql(3)
+          @computer.check_diagonals
         end
       end
 
-      context "with 2 human marks and 0 computer marks (from right bottom)" do
-        it "returns column + 1" do
+      context "with 2 human marks (from right bottom)" do
+        it "defends" do
           @board.grid = [["-", "-", "-", "-"],
                          ["O", "-", "-", "-"],
                          ["X", "O", "X", "O"],
                          ["X", "X", "O", "X"]]
-          expect(@computer.check_diagonals(iteration: 0)).to eql(2)
-          @computer.check_diagonals(iteration: 0)
+          expect(@computer.check_diagonals).to eql(2)
+          @computer.check_diagonals
         end
       end
 
-      context "with 3 human marks and 0 computer marks (from left bottom)" do
-        it "returns column + 1" do
+      context "with 3 human marks (from left bottom)" do
+        it "defends" do
           @board.grid = [["-", "-", "-", "-"],
                          ["O", "O", "X", "O"],
                          ["X", "X", "O", "O"],
                          ["X", "X", "O", "X"]]
-          expect(@computer.check_diagonals(iteration: 0)).to eql(4)
-          @computer.check_diagonals(iteration: 0)
+          expect(@computer.check_diagonals).to eql(4)
+          @computer.check_diagonals
         end
       end
 
-      context "with 3 human marks and 0 computer marks (from right bottom)" do
-        it "returns column + 1" do
+      context "with 3 human marks (from right bottom)" do
+        it "defends" do
           @board.grid = [["-", "-", "-", "-"],
                          ["O", "X", "O", "-"],
                          ["X", "O", "X", "O"],
                          ["X", "X", "O", "X"]]
-          expect(@computer.check_diagonals(iteration: 0)).to eql(1)
-          @computer.check_diagonals(iteration: 0)
+          expect(@computer.check_diagonals).to eql(1)
+          @computer.check_diagonals
         end
       end
 
-      context "with 3 computer marks and 0 human marks (from left bottom)" do
-        it "returns column + 1" do
+      context "with 3 computer marks (from left bottom)" do
+        it "attacks and wins" do
           @board.grid = [["-", "-", "-", "-"],
-                         ["O", "-", "O", "X"],
+                         ["O", "X", "O", "X"],
                          ["X", "O", "X", "O"],
                          ["O", "X", "X", "X"]]
-          expect(@computer.check_diagonals(iteration: 0)).to eql(4)
-          @computer.check_diagonals(iteration: 0)
+          expect(@computer.check_diagonals).to eql(4)
+          @computer.check_diagonals
         end
       end
 
-      context "with 3 computer marks and 0 human marks (from right bottom)" do
-        it "returns column + 1" do
+      context "with 3 computer marks (from right bottom)" do
+        it "attacks and wins" do
           @board.grid = [["-", "-", "-", "-"],
                          ["O", "O", "X", "X"],
                          ["X", "X", "O", "O"],
                          ["X", "X", "X", "O"]]
-          expect(@computer.diagonal_from_right_bottom(iteration: 0)).to eql(1)
-          @computer.diagonal_from_right_bottom(iteration: 0)
+          expect(@computer.diagonal_from_right_bottom(0)).to eql(1)
+          @computer.diagonal_from_right_bottom(0)
         end
       end
     end
 
     context "on second iteration" do
-      context "with 2 human marks and 0 computer marks (from left bottom)" do
-        it "returns column + 1" do
+      context "with 2 human marks (from left bottom)" do
+        it "defends" do
           @board.grid = [["-", "-", "-", "-"],
                          ["O", "-", "-", "-"],
                          ["X", "X", "O", "O"],
                          ["X", "X", "O", "X"]]
-          expect(@computer.check_diagonals(iteration: 1)).to eql(3)
-          @computer.check_diagonals(iteration: 1)
+          expect(@computer.check_diagonals).to eql(3)
+          @computer.check_diagonals
         end
       end
 
-      context "with 2 human marks and 0 computer marks (from right bottom)" do
-        it "returns column + 1" do
+      context "with 2 human marks (from right bottom)" do
+        it "defends" do
           @board.grid = [["-", "-", "-", "-"],
                          ["O", "-", "-", "-"],
                          ["X", "O", "X", "O"],
-                         ["X", "X", "O", "X"]]
-          expect(@computer.check_diagonals(iteration: 1)).to eql(2)
-          @computer.check_diagonals(iteration: 1)
+                         ["O", "X", "O", "X"]]
+          expect(@computer.check_diagonals).to eql(2)
+          @computer.check_diagonals
         end
       end
 
-      context "with 2 computer marks and 0 human marks (from left bottom)" do
-        it "returns column + 1" do
+      context "with 2 computer marks (from left bottom)" do
+        it "defends" do
           @board.grid = [["-", "-", "-", "-"],
                          ["O", "-", "-", "-"],
                          ["X", "O", "X", "O"],
                          ["O", "X", "X", "X"]]
-          expect(@computer.check_diagonals(iteration: 1)).to eql(3)
-          @computer.check_diagonals(iteration: 1)
+          expect(@computer.check_diagonals).to eql(2)
+          @computer.check_diagonals
         end
       end
 
-      context "with 2 computer marks and 0 human marks (from right bottom)" do
-        it "returns column + 1" do
+      context "with 2 computer marks (from right bottom)" do
+        it "defends" do
           @board.grid = [["-", "-", "-", "-"],
                          ["O", "-", "-", "-"],
                          ["X", "X", "O", "O"],
                          ["X", "X", "X", "O"]]
-          expect(@computer.check_diagonals(iteration: 1)).to eql(3)
-          @computer.check_diagonals(iteration: 1)
+          expect(@computer.check_diagonals).to eql(3)
+          @computer.check_diagonals
         end
       end
     end
