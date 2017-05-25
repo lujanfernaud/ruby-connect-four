@@ -34,10 +34,6 @@ describe Game do
   end
 
   describe "#setup" do
-    it "exists" do
-      expect(@game).to respond_to(:setup)
-    end
-
     it "prints board, sets players, asks names if 2 and starts game" do
       expect(@game.board).to receive(:print_board)
       expect(@game).to receive(:set_players)
@@ -48,8 +44,12 @@ describe Game do
   end
 
   describe "#start" do
-    it "exists" do
-      expect(@game).to respond_to(:start)
+    it "prints board, calls #first_turn and #second_turn" do
+      allow(@game).to receive(:loop).and_yield
+      expect(@game.board).to receive(:print_board)
+      expect(@game).to receive(:first_turn)
+      expect(@game).to receive(:second_turn)
+      @game.start
     end
   end
 
