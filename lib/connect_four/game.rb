@@ -163,15 +163,17 @@ class Game
   end
 
   def try_again
-    case STDIN.gets.chomp.downcase
-    when "y"
-      board.reset
-      start
-    when "n"
-      exit_game
-    else
-      board.print_board
-      puts "Please type 'y' or 'n'."
+    loop do
+      case STDIN.gets.chomp.downcase
+      when "y"
+        board.reset
+        start
+      when "n"
+        exit_game
+      else
+        board.print_board
+        puts "Please type 'y' or 'n'."
+      end
     end
   end
 
