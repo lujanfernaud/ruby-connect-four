@@ -319,6 +319,10 @@ describe Game do
   end
 
   describe "#try_again" do
+    before do
+      allow(@game).to receive(:loop).and_yield
+    end
+
     it "calls Board#reset and Game#start if 'y'" do
       allow(STDIN).to receive(:gets).and_return("y")
       expect(@game.board).to receive(:reset)
