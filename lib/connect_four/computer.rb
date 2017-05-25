@@ -21,7 +21,7 @@ class Computer < Player
       matches = []
       matches << check_rows(iteration: i)
       matches << check_columns(iteration: i)
-      matches << check_diagonals(iteration: i)
+      matches << check_diagonals
       good_match = proc { |m| m && board.column_available?(m) }
 
       column = matches.select(&good_match).first
@@ -96,11 +96,14 @@ class Computer < Player
     end
   end
 
-  def check_diagonals(iteration:)
-    column = diagonal_from_left_bottom(iteration)
-    return column if column
-    column = diagonal_from_right_bottom(iteration)
-    return column if column
+  def check_diagonals
+    2.times do |iteration|
+      column = diagonal_from_left_bottom(iteration)
+      return column if column
+      column = diagonal_from_right_bottom(iteration)
+      return column if column
+    end
+
     false
   end
 
