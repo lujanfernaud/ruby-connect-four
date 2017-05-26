@@ -35,21 +35,22 @@ class Computer < Player
 
   def check_rows(iteration:)
     board.grid.each.with_index do |row, index|
-      array = []
-      row.each { |column| array << column }
+      array = row
 
       computer_marks = array.join.count(mark)
       human_marks    = array.join.count(human_mark)
       empty_slots    = array.join.count("-")
 
-      next if empty_slots.zero? && index < 3
-      return false if empty_slots.zero?
+      if empty_slots.zero?
+        case index
+        when 0..2 then next
+        when 3    then return false
+        end
+      end
 
       column = array.index("-") + 1
-      attack = attack(computer_marks, column, iteration)
-      return attack if attack && human_marks.zero?
-      defend = defend(human_marks, column, iteration)
-      return defend if defend && computer_marks.zero?
+      action = attack_or_defend(computer_marks, human_marks, column, iteration)
+      return action if action
 
       next if index < 3
       return false
@@ -57,11 +58,8 @@ class Computer < Player
   end
 
   def check_columns(iteration:)
-    4.times do |column|
-      array = []
-      board.grid.each.with_index do |_row, index|
-        array << board.grid[index][column]
-      end
+    4.times do |col|
+      array = board.grid.map.with_index { |_row, index| board.grid[index][col] }
 
       computer_marks = array.join.count(mark)
       human_marks    = array.join.count(human_mark)
@@ -69,14 +67,20 @@ class Computer < Player
 
       next if empty_slots.zero?
 
-      attack = attack(computer_marks, column + 1, iteration)
-      return attack if attack && human_marks.zero?
-      defend = defend(human_marks, column + 1, iteration)
-      return defend if defend && computer_marks.zero?
+      column = col + 1
+      action = attack_or_defend(computer_marks, human_marks, column, iteration)
+      return action if action
 
-      next if column < 3
+      next if col < 3
       return false
     end
+  end
+
+  def attack_or_defend(computer_marks, human_marks, column, iteration)
+    attack = attack(computer_marks, column, iteration)
+    return attack if attack && human_marks.zero?
+    defend = defend(human_marks, column, iteration)
+    return defend if defend && computer_marks.zero?
   end
 
   def attack(computer_marks, column, iteration)
