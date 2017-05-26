@@ -5,12 +5,16 @@ describe Player do
     @game   = Game.new
     @player = @game.human1
     @player.name = "Matz"
-    @player.mark = "X"
   end
 
   describe "attributes" do
     it "has a name" do
       expect(@player.name).to eql("Matz")
+    end
+
+    it "allows reading and writing for :name" do
+      @player.name = "Sandi"
+      expect(@player.name).to eql("Sandi")
     end
 
     it "has a mark" do
