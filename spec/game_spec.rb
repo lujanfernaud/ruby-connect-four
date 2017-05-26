@@ -270,6 +270,26 @@ describe Game do
     end
   end
 
+  describe "#finish_game" do
+    it "prints 'There's no winner. Try again? (y/n)' and calls #try_again" do
+      expect(@game.board).to receive(:print_board)
+      expect(STDOUT).to receive(:puts)
+        .with("There's no winner. Try again? (y/n)")
+      expect(@game).to receive(:try_again)
+      @game.finish_game
+    end
+  end
+
+  describe "#there_is_no_winner?" do
+    it "returns 'true' if there are no more empty slots" do
+      @game.board.grid = [["X", "X", "O", "X"],
+                          ["O", "O", "O", "O"],
+                          ["O", "X", "X", "X"],
+                          ["O", "X", "O", "X"]]
+      expect(@game.there_is_no_winner?).to eql(true)
+    end
+  end
+
   describe "#the_winner_is" do
     context "when there is 1 player" do
       it "returns 'You WIN! Try again? (y/n)'" do
@@ -302,26 +322,6 @@ describe Game do
         expect(@game).to receive(:try_again)
         @game.the_winner_is(@game.human2)
       end
-    end
-  end
-
-  describe "#there_is_no_winner?" do
-    it "returns 'true' if there are no more empty slots" do
-      @game.board.grid = [["X", "X", "O", "X"],
-                          ["O", "O", "O", "O"],
-                          ["O", "X", "X", "X"],
-                          ["O", "X", "O", "X"]]
-      expect(@game.there_is_no_winner?).to eql(true)
-    end
-  end
-
-  describe "#finish_game" do
-    it "prints 'There's no winner. Try again? (y/n)' and calls #try_again" do
-      expect(@game.board).to receive(:print_board)
-      expect(STDOUT).to receive(:puts)
-        .with("There's no winner. Try again? (y/n)")
-      expect(@game).to receive(:try_again)
-      @game.finish_game
     end
   end
 

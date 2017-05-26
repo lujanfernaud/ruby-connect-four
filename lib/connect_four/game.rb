@@ -142,14 +142,14 @@ class Game
     end
   end
 
-  def there_is_no_winner?
-    board.grid.flatten.none? { |value| value == "-" }
-  end
-
   def finish_game
     board.print_board
     puts "There's no winner. Try again? (y/n)"
     try_again
+  end
+
+  def there_is_no_winner?
+    board.grid.flatten.none? { |value| value == "-" }
   end
 
   def the_winner_is(last_player)
