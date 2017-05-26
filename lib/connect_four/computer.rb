@@ -1,3 +1,5 @@
+require "pry"
+
 class Computer < Player
   attr_accessor :name
   attr_reader   :mark, :board, :human_mark
@@ -43,23 +45,14 @@ class Computer < Player
       next if empty_slots.zero? && index < 3
       return false if empty_slots.zero?
 
-      if computer_marks == 3 && human_marks.zero?
-        return array.index("-") + 1
-      end
+      column = array.index("-") + 1
+      attack = attack(computer_marks, column, iteration)
+      return attack if attack && human_marks.zero?
+      defend = defend(human_marks, column, iteration)
+      return defend if defend && computer_marks.zero?
 
-      if computer_marks == 2 && human_marks.zero? && iteration == 1
-        return array.index("-") + 1
-      end
-
-      if computer_marks == 1 && human_marks.zero? && iteration == 2
-        return array.index("-") + 1
-      end
-
-      next if computer_mark_or_no_human_mark(array) && index < 3
-      return false if computer_mark_or_no_human_mark(array)
-      return false if iteration.zero? && human_marks < 2
-
-      return array.index("-") + 1
+      next if index < 3
+      return false
     end
   end
 
@@ -76,23 +69,35 @@ class Computer < Player
 
       next if empty_slots.zero?
 
-      if computer_marks == 3 && human_marks.zero?
-        return column + 1
+      attack = attack(computer_marks, column + 1, iteration)
+      return attack if attack && human_marks.zero?
+      defend = defend(human_marks, column + 1, iteration)
+      return defend if defend && computer_marks.zero?
+
+      next if column < 3
+      return false
+    end
+  end
+
+  def attack(computer_marks, column, iteration)
+    case computer_marks
+    when 3 then column
+    when 2 then column if iteration == 1
+    when 1 then column if iteration == 2
+    else false
+    end
+  end
+
+  def defend(human_marks, column, iteration)
+    case human_marks
+    when 2..3 then column
+    when 1
+      if iteration.zero?
+        false
+      else
+        column
       end
-
-      if computer_marks == 2 && human_marks.zero? && iteration == 1
-        return column + 1
-      end
-
-      if computer_marks == 1 && human_marks.zero? && iteration == 2
-        return column + 1
-      end
-
-      next if computer_mark_or_no_human_mark(array) && column < 3
-      return false if computer_mark_or_no_human_mark(array)
-      return false if iteration.zero? && human_marks < 2
-
-      return column + 1
+    else false
     end
   end
 
