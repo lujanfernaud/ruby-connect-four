@@ -5,31 +5,38 @@ describe Game do
     @game = Game.new
   end
 
-  it "has a board" do
-    expect(@game.board).to be_a(Board)
-  end
+  describe "attributes" do
+    it "has a board" do
+      expect(@game.board).to be_a(Board)
+    end
 
-  it "has number of players" do
-    expect(@game.players).to be_an(Integer)
-  end
+    it "has number of players" do
+      expect(@game.players).to be_an(Integer)
+    end
 
-  it "has one player by default" do
-    expect(@game.players).to eql(1)
-  end
+    it "has one player by default" do
+      expect(@game.players).to eql(1)
+    end
 
-  it "has human players" do
-    expect(@game.human1).to be_a(Player)
-    expect(@game.human2).to be_a(Player)
-  end
+    it "allows reading and writing for :players" do
+      @game.players = 2
+      expect(@game.players).to eql(2)
+    end
 
-  it "has a computer player" do
-    expect(@game.computer).to be_a(Computer)
-  end
+    it "has human players" do
+      expect(@game.human1).to be_a(Player)
+      expect(@game.human2).to be_a(Player)
+    end
 
-  it "sends board to all players" do
-    players = [@game.human1, @game.human2, @game.computer]
-    players.each do |player|
-      expect(player.board).to respond_to(:grid)
+    it "has a computer player" do
+      expect(@game.computer).to be_a(Computer)
+    end
+
+    it "sends board to all players" do
+      players = [@game.human1, @game.human2, @game.computer]
+      players.each do |player|
+        expect(player.board).to respond_to(:grid)
+      end
     end
   end
 
