@@ -8,16 +8,18 @@ describe Player do
     @player.mark = "X"
   end
 
-  it "has a name" do
-    expect(@player.name).to eql("Matz")
-  end
+  describe "attributes" do
+    it "has a name" do
+      expect(@player.name).to eql("Matz")
+    end
 
-  it "has a mark" do
-    expect(@player.mark).to eql("X")
-  end
+    it "has a mark" do
+      expect(@player.mark).to eql("X")
+    end
 
-  it "knows about board" do
-    expect(@player).to respond_to(:board)
+    it "knows about board" do
+      expect(@player).to respond_to(:board)
+    end
   end
 
   describe "#throw" do
