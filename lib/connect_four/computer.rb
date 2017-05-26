@@ -198,12 +198,6 @@ class Computer < Player
     end
   end
 
-  def computer_mark_or_no_human_mark(array)
-    computer_mark = array.any?  { |mark| mark == self.mark }
-    no_human_mark = array.none? { |mark| mark == human_mark }
-    computer_mark || no_human_mark
-  end
-
   def choose_random_column
     rows    = [*0..3]
     columns = [*0..3]
