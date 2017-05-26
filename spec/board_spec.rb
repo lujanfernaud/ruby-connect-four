@@ -28,10 +28,6 @@ describe Board do
   end
 
   describe "#position_mark_in_column" do
-    it "exists" do
-      expect(@board).to respond_to(:position_mark_in_column)
-    end
-
     it "takes column and player as arguments" do
       expect { @board.position_mark_in_column(2, @player) }.not_to raise_error
     end
