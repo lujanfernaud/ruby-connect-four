@@ -22,7 +22,7 @@ describe Board do
     it "clears screen and puts board" do
       expect(@board).to receive(:system).with("clear")
       expect(@board).to receive(:system).with("cls")
-      expect(STDOUT).to receive(:puts).exactly(17).times
+      expect(STDOUT).to receive(:puts).exactly(21).times
       @board.print_board
     end
   end
@@ -33,9 +33,9 @@ describe Board do
     end
 
     it "checks what position is available in the column and puts mark" do
-      @board.grid[3][1] = "X"
+      @board.grid[5][1] = "X"
       @board.position_mark_in_column(2, @player)
-      expect(@board.grid[2][1]).to eql("X")
+      expect(@board.grid[4][1]).to eql("X")
     end
   end
 
@@ -72,11 +72,13 @@ describe Board do
 
   describe "#reset" do
     it "resets board" do
-      new_grid    = Array.new(4) { Array.new(4) { "-" } }
-      @board.grid = [["X", "X", "O", "-"],
-                     ["O", "X", "O", "O"],
-                     ["O", "X", "X", "X"],
-                     ["O", "X", "O", "X"]]
+      new_grid    = Array.new(6) { Array.new(7) { "-" } }
+      @board.grid = [["X", "X", "O", "-", "-", "-", "-"],
+                     ["O", "X", "O", "-", "-", "-", "O"],
+                     ["O", "X", "X", "-", "-", "-", "X"],
+                     ["O", "X", "X", "-", "-", "-", "X"],
+                     ["O", "X", "X", "-", "-", "-", "X"],
+                     ["O", "X", "O", "-", "-", "-", "X"]]
       @board.reset
       expect(@board.grid).to match(new_grid)
     end
