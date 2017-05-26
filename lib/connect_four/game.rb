@@ -106,19 +106,23 @@ class Game
 
   def check_rows(last_player)
     board.grid.each do |row|
-      array = row.map { |mark| mark if mark == last_player.mark }.compact
-      the_winner_is(last_player) if array.length == 4
+      row.each.with_index do |_mark, index|
+        break if index == 4
+        slice = row.slice(index...index + 4)
+        the_winner_is(last_player) if slice.all? { |mark| mark == last_player.mark }
+      end
     end
   end
 
   def check_columns(last_player)
-    7.times do |column|
-      array = []
-      board.grid.each do |row|
-        array << true if row[column] == last_player.mark
-      end
+    7.times do |col|
+      column = board.grid.map { |row| row[col] }
 
-      return the_winner_is(last_player) if array.length == 4
+      column.each.with_index do |_mark, index|
+        break if index == 3
+        slice = column.slice(index...index + 4)
+        return the_winner_is(last_player) if slice.all? { |mark| mark == last_player.mark }
+      end
     end
   end
 
