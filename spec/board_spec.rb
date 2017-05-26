@@ -7,8 +7,15 @@ describe Board do
     @player = @game.human1
   end
 
-  it "has a grid" do
-    raise unless @board.grid
+  describe "attributes" do
+    it "knows about :game" do
+      raise unless @board.game
+    end
+
+    it "allows reading a writing for :grid" do
+      @board.grid[0][1] = "X"
+      expect(@board.grid[0][1]).to eql("X")
+    end
   end
 
   describe "#print_board" do
