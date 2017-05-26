@@ -19,8 +19,11 @@ describe Board do
   end
 
   describe "#print_board" do
-    it "exists" do
-      expect(@board).to respond_to(:print_board)
+    it "clears screen and puts board" do
+      expect(@board).to receive(:system).with("clear")
+      expect(@board).to receive(:system).with("cls")
+      expect(STDOUT).to receive(:puts).exactly(17).times
+      @board.print_board
     end
   end
 
