@@ -1,6 +1,6 @@
 class Computer < Player
-  attr_accessor :name,  :mark
-  attr_reader   :board, :human_mark
+  attr_accessor :name
+  attr_reader   :mark, :board, :human_mark
 
   def initialize(mark:, human_mark:, board: [])
     @name       = "Computer"
