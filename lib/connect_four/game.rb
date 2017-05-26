@@ -57,7 +57,7 @@ class Game
   def check_inputted_column
     loop do
       input = STDIN.gets.chomp
-      return input if input =~ /^[1-4]$/
+      return input if input =~ /^[1-7]$/
       exit_game    if input == "exit".downcase
 
       board.print_board
@@ -106,12 +106,13 @@ class Game
 
   def check_rows(last_player)
     board.grid.each do |row|
-      the_winner_is(last_player) if row.all? { |mark| mark == last_player.mark }
+      array = row.map { |mark| mark if mark == last_player.mark }.compact
+      the_winner_is(last_player) if array.length == 4
     end
   end
 
   def check_columns(last_player)
-    4.times do |column|
+    7.times do |column|
       array = []
       board.grid.each do |row|
         array << true if row[column] == last_player.mark
@@ -131,7 +132,7 @@ class Game
   end
 
   def check_marks_in_diagonal(grid, last_player)
-    4.times do |column|
+    6.times do |column|
       array = []
       grid.each do |row|
         array << true if row[column] == last_player.mark
