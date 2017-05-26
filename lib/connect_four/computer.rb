@@ -19,7 +19,7 @@ class Computer < Player
   end
 
   def choose_column
-    3.times do |i|
+    6.times do |i|
       matches = []
       matches << check_rows(iteration: i)
       matches << check_columns(iteration: i)
@@ -43,8 +43,8 @@ class Computer < Player
 
       if empty_slots.zero?
         case index
-        when 0..2 then next
-        when 3    then return false
+        when 0..4 then next
+        when 5    then return false
         end
       end
 
@@ -52,13 +52,13 @@ class Computer < Player
       action = attack_or_defend(computer_marks, human_marks, column, iteration)
       return action if action
 
-      next if index < 3
+      next if index < 5
       return false
     end
   end
 
   def check_columns(iteration:)
-    4.times do |col|
+    7.times do |col|
       array = board.grid.map.with_index { |_row, index| board.grid[index][col] }
 
       computer_marks = array.join.count(mark)
@@ -71,16 +71,16 @@ class Computer < Player
       action = attack_or_defend(computer_marks, human_marks, column, iteration)
       return action if action
 
-      next if col < 3
+      next if col < 6
       return false
     end
   end
 
   def attack_or_defend(computer_marks, human_marks, column, iteration)
     attack = attack(computer_marks, column, iteration)
-    return attack if attack && human_marks.zero?
+    return attack if attack && human_marks <= 3
     defend = defend(human_marks, column, iteration)
-    return defend if defend && computer_marks.zero?
+    return defend if defend && computer_marks <= 3
   end
 
   def attack(computer_marks, column, iteration)
@@ -127,8 +127,8 @@ class Computer < Player
     return false if empty_slots.zero?
     return false unless supportive_column_left(column)
 
-    return diagonal_attack(computer_marks, column, iteration) if human_marks.zero?
-    return diagonal_defend(human_marks, column) if computer_marks.zero?
+    return diagonal_attack(computer_marks, column, iteration) if human_marks <= 3
+    return diagonal_defend(human_marks, column) if computer_marks <= 3
   end
 
   def build_diagonal_left_array
@@ -160,8 +160,8 @@ class Computer < Player
     return false if empty_slots.zero?
     return false unless supportive_column_right(column)
 
-    return diagonal_attack(computer_marks, column, iteration) if human_marks.zero?
-    return diagonal_defend(human_marks, column) if computer_marks.zero?
+    return diagonal_attack(computer_marks, column, iteration) if human_marks <= 3
+    return diagonal_defend(human_marks, column) if computer_marks <= 3
   end
 
   def build_diagonal_right_array
@@ -199,8 +199,8 @@ class Computer < Player
   end
 
   def choose_random_column
-    rows    = [*0..3]
-    columns = [*0..3]
+    rows    = [*0..5]
+    columns = [*0..6]
 
     loop do
       row      = rows.sample
