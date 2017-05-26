@@ -7,20 +7,22 @@ describe Computer do
     @computer = @game.computer
   end
 
-  it "has a name" do
-    expect(@computer.name).to eql("Computer")
-  end
+  describe "attributes" do
+    it "has a name" do
+      expect(@computer.name).to eql("Computer")
+    end
 
-  it "has a mark" do
-    expect(@computer.mark).to eql("O")
-  end
+    it "has a mark" do
+      expect(@computer.mark).to eql("O")
+    end
 
-  it "knows about board" do
-    expect(@computer).to respond_to(:board)
-  end
+    it "knows about board" do
+      expect(@computer).to respond_to(:board)
+    end
 
-  it "has hability to throw" do
-    expect(@computer).to respond_to(:throw)
+    it "has hability to throw" do
+      expect(@computer).to respond_to(:throw)
+    end
   end
 
   describe "#throw" do
