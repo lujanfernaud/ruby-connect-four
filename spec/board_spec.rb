@@ -12,9 +12,13 @@ describe Board do
       raise unless @board.game
     end
 
-    it "allows reading a writing for :grid" do
+    it "allows reading and writing for :grid" do
       @board.grid[0][1] = "X"
       expect(@board.grid[0][1]).to eql("X")
+    end
+
+    it "allows reading for :diagonals" do
+      raise unless @board.diagonals
     end
   end
 
