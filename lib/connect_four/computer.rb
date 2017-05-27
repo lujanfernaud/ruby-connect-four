@@ -35,11 +35,7 @@ class Computer < Player
 
   def check_rows(iteration:)
     board.grid.each.with_index do |row, index|
-      array = row
-
-      computer_marks = array.join.count(mark)
-      human_marks    = array.join.count(human_mark)
-      empty_slots    = array.join.count("-")
+      empty_slots = row.join.count("-")
 
       if empty_slots.zero?
         case index
@@ -48,13 +44,46 @@ class Computer < Player
         end
       end
 
-      column = case array.index("X")
-               when 0..4 then array.index("X") + 2
-               when 5..6 then array.index("X") - 2
-               end
+      matches = { human: {}, computer: {} }
 
-      action = attack_or_defend(computer_marks, human_marks, column, iteration)
-      return action if action
+      2.upto(3) do |i|
+        human    = Array.new(i) { "X" }
+        computer = Array.new(i) { "O" }
+        players  = { human: human, computer: computer }
+
+        players.each do |player_name, player_marks|
+          idx = row.each_cons(i).map { |m| m == player_marks }.index(true)
+          next if idx.nil?
+
+          case i
+          when 2
+            next if iteration.zero?
+
+            if row[idx - 1] == "-" && row[idx + 2] == "-"
+              matches[player_name][i] = [idx - 1, idx + 2].sample
+            elsif row[(idx - 3)..(idx - 1)].all? { |slot| slot == "-" }
+              matches[player_name][i] = idx - (i - 1)
+            elsif row[(idx + 1)..(idx + 3)].all? { |slot| slot == "-" }
+              matches[player_name][i] = idx + i
+            end
+          when 3
+            if row[idx - 1] == "-" && row[idx + 3] == "-"
+              matches[player_name][i] = [idx - 1, idx + 3].sample
+            elsif row[idx - 1] == "-"
+              matches[player_name][i] = idx - 1
+            elsif row[idx + 3] == "-"
+              matches[player_name][i] = idx + 3
+            end
+          end
+        end
+      end
+
+      columns = [matches[:human][3], matches[:computer][3],
+                 matches[:human][2], matches[:computer][2]]
+
+      column = columns.compact.first
+
+      return column + 1 if column
 
       next if index < 5
       return false
