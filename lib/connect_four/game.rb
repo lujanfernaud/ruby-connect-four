@@ -149,22 +149,18 @@ class Game
       y = pair[:start][:y]
       x = pair[:start][:x]
 
-      diagonal = { side:   side[:side],
-                   start:  pair[:start][:x],
-                   finish: pair[:finish][:x] }
-
-      add_marks(diagonal, y, x, marks)
+      add_marks(pair, side[:side], y, x, marks)
     end
     marks
   end
 
-  def add_marks(diagonal, y, x, marks)
-    start  = diagonal[:start]
-    finish = diagonal[:finish]
+  def add_marks(diagonal, side, y, x, marks)
+    start  = diagonal[:start][:x]
+    finish = diagonal[:finish][:x]
 
     (start..finish).each do
       marks << board.grid[y][x]
-      y  = case diagonal[:side]
+      y  = case side
            when :left  then y - 1
            when :right then y + 1
            end
