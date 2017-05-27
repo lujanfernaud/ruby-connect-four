@@ -109,7 +109,8 @@ class Game
       row.each.with_index do |_mark, index|
         break if index == 4
         slice = row.slice(index...index + 4)
-        the_winner_is(last_player) if slice.all? { |mark| mark == last_player.mark }
+        the_winner_is(last_player) if
+          slice.all? { |mark| mark == last_player.mark }
       end
     end
   end
@@ -121,66 +122,54 @@ class Game
       column.each.with_index do |_mark, index|
         break if index == 3
         slice = column.slice(index...index + 4)
-        return the_winner_is(last_player) if slice.all? { |mark| mark == last_player.mark }
+        return the_winner_is(last_player) if
+          slice.all? { |mark| mark == last_player.mark }
       end
     end
   end
 
   def check_diagonals(last_player)
-    sides = [from_left_bottom, from_right_bottom]
+    board.diagonals.each do |side|
+      marks = build_diagonals_from(side)
 
-    sides.each do |side|
-      diagonals = build_diagonals_from(side)
-
-      diagonals.each.with_index do |_mark, index|
-        break if index == diagonals.length - 5
-        slice = diagonals.slice(index...index + 4)
-        return the_winner_is(last_player) if slice.all? { |mark| mark == last_player.mark }
+      marks.each.with_index do |_mark, index|
+        break if index == marks.length - 5
+        slice = marks.slice(index...index + 4)
+        return the_winner_is(last_player) if
+          slice.all? { |mark| mark == last_player.mark }
       end
     end
   end
 
-  def build_diagonals_from(from)
-    diagonals = []
-    from.each_value do |pair|
+  def build_diagonals_from(side)
+    marks = []
+    side.each_value do |pair|
       next if pair == :left || pair == :right
 
-      y     = pair[:start][:y]
-      x     = pair[:start][:x]
-      marks = pair[:finish][:x] - pair[:start][:x] + 1
+      y = pair[:start][:y]
+      x = pair[:start][:x]
 
-      marks.times do
-        diagonals << board.grid[y][x]
-        case from[:side]
-        when :left  then y -= 1
-        when :right then y += 1
-        end
+      diagonal = { side:   side[:side],
+                   start:  pair[:start][:x],
+                   finish: pair[:finish][:x] }
 
-        x += 1
-      end
+      add_marks(diagonal, y, x, marks)
     end
-
-    diagonals
+    marks
   end
 
-  def from_left_bottom
-    { side:       :left,
-      diagonal1: { start: { y: 3, x: 0 }, finish: { y: 0, x: 3 } },
-      diagonal2: { start: { y: 4, x: 0 }, finish: { y: 0, x: 4 } },
-      diagonal3: { start: { y: 5, x: 0 }, finish: { y: 0, x: 5 } },
-      diagonal4: { start: { y: 5, x: 1 }, finish: { y: 0, x: 6 } },
-      diagonal5: { start: { y: 5, x: 2 }, finish: { y: 1, x: 6 } },
-      diagonal6: { start: { y: 5, x: 3 }, finish: { y: 2, x: 6 } } }
-  end
+  def add_marks(diagonal, y, x, marks)
+    start  = diagonal[:start]
+    finish = diagonal[:finish]
 
-  def from_right_bottom
-    { side:        :right,
-      diagonal1: { start: { y: 2, x: 0 }, finish: { y: 5, x: 3 } },
-      diagonal2: { start: { y: 1, x: 0 }, finish: { y: 5, x: 4 } },
-      diagonal3: { start: { y: 0, x: 0 }, finish: { y: 5, x: 5 } },
-      diagonal4: { start: { y: 0, x: 1 }, finish: { y: 5, x: 6 } },
-      diagonal5: { start: { y: 0, x: 2 }, finish: { y: 4, x: 6 } },
-      diagonal6: { start: { y: 0, x: 3 }, finish: { y: 3, x: 6 } } }
+    (start..finish).each do
+      marks << board.grid[y][x]
+      y  = case diagonal[:side]
+           when :left  then y - 1
+           when :right then y + 1
+           end
+      x += 1
+    end
   end
 
   def finish_game
