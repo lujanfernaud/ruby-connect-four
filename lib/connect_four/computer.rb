@@ -82,7 +82,7 @@ class Computer < Player
 
       next if index < 5
 
-      columns = [matches[:human][3], matches[:computer][3],
+      columns = [matches[:computer][3], matches[:human][3],
                  matches[:human][2], matches[:computer][2]]
       column  = columns.compact.first
 
@@ -121,7 +121,7 @@ class Computer < Player
 
       next if col < 6
 
-      columns = [matches[:human][3], matches[:computer][3],
+      columns = [matches[:computer][3], matches[:human][3],
                  matches[:human][2], matches[:computer][2]]
       column  = columns.compact.first
 
