@@ -41,14 +41,14 @@ class Computer < Player
     board.grid.each.with_index do |row, index|
       empty_slots = row.join.count("-")
 
-      if empty_slots.zero?
+      if empty_slots == 7
         case index
         when 0..4 then next
         when 5    then return false
         end
       end
 
-      2.upto(3) do |i|
+      1.upto(3) do |i|
         human    = Array.new(i) { "X" }
         computer = Array.new(i) { "O" }
         players  = { human: human, computer: computer }
@@ -58,20 +58,33 @@ class Computer < Player
           next if idx.nil?
 
           case i
+          when 1
+            next if iteration.zero?
+
+            if idx > 0 && row[idx - 1] == "-" && row[idx + 1] == "-"
+              matches[player_name][i] = [idx - 1, idx + 1].sample
+            elsif idx > 1 && row[(idx - 2)..(idx - 1)].all? { |slot| slot == "-" }
+              matches[player_name][i] = idx - i
+            elsif row[(idx + i)..(idx + (i + 1))].all? { |slot| slot == "-" }
+              matches[player_name][i] = idx + i
+            end
           when 2
             next if iteration.zero?
 
-            if row[idx - 1] == "-" && row[idx + 2] == "-"
+            if idx > 0 && row[idx - 1] == "-" && row[idx + 2] == "-"
               matches[player_name][i] = [idx - 1, idx + 2].sample
-            elsif row[(idx - 2)..(idx - 1)].all? { |slot| slot == "-" }
+            elsif idx > 1 && row[(idx - 2)..(idx - 1)].all? { |slot| slot == "-" } ||
+                  row[idx - 1] == "-" && row[idx - 2] == "X"
               matches[player_name][i] = idx - (i - 1)
-            elsif row[(idx + 1)..(idx + 2)].all? { |slot| slot == "-" }
+            elsif row[(idx + i)..(idx + (i + 1))].all? { |slot| slot == "-" } ||
+                  row[idx + i] == "-" && row[idx + i + 1] == "X"
               matches[player_name][i] = idx + i
             end
           when 3
-            if row[idx - 1] == "-" && row[idx + 3] == "-"
+
+            if idx > 0 && row[idx - 1] == "-" && row[idx + 3] == "-"
               matches[player_name][i] = [idx - 1, idx + 3].sample
-            elsif row[idx - 1] == "-"
+            elsif idx > 1 && row[idx - 1] == "-"
               matches[player_name][i] = idx - 1
             elsif row[idx + 3] == "-"
               matches[player_name][i] = idx + 3
@@ -83,7 +96,7 @@ class Computer < Player
       next if index < 5
 
       columns = [matches[:computer][3], matches[:human][3],
-                 matches[:human][2], matches[:computer][2]]
+                 matches[:computer][2], matches[:human][2], matches[:human][1]]
       column  = columns.compact.first
 
       return column + 1 if column
@@ -99,7 +112,7 @@ class Computer < Player
       array.reverse!
 
       empty_slots = array.join.count("-")
-      next if empty_slots.zero?
+      next if empty_slots.zero? || empty_slots == 7
 
       2.upto(3) do |i|
         human    = Array.new(i) { "X" }
