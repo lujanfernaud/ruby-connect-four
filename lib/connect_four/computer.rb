@@ -143,35 +143,6 @@ class Computer < Player
     end
   end
 
-  def attack_or_defend(computer_marks, human_marks, column, iteration)
-    attack = attack(computer_marks, column, iteration)
-    return attack if attack && human_marks <= 3
-    defend = defend(human_marks, column, iteration)
-    return defend if defend && computer_marks <= 3
-  end
-
-  def attack(computer_marks, column, iteration)
-    case computer_marks
-    when 3 then column
-    when 2 then column if iteration == 1
-    when 1 then column if iteration == 2
-    else false
-    end
-  end
-
-  def defend(human_marks, column, iteration)
-    case human_marks
-    when 2..3 then column
-    when 1
-      if iteration.zero?
-        false
-      else
-        column
-      end
-    else false
-    end
-  end
-
   def check_diagonals
     2.times do |iteration|
       column = diagonal_from_left_bottom(iteration)
