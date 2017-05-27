@@ -54,6 +54,39 @@ describe Computer do
         @computer.throw
         expect([@board.grid[5][1], @board.grid[5][4]]).to include("O")
       end
+
+      it "places mark next to human mark" do
+        @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["O", "-", "-", "-", "O", "-", "-"],
+                       ["X", "X", "-", "X", "O", "X", "O"],
+                       ["X", "O", "X", "O", "X", "X", "X"]]
+        @computer.throw
+        expect(@board.grid[4][2]).to eql("O")
+      end
+
+      it "places mark next to human mark" do
+        @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["O", "-", "-", "-", "-", "-", "-"],
+                       ["X", "O", "O", "X", "-", "X", "X"],
+                       ["X", "O", "X", "O", "X", "X", "X"]]
+        @computer.throw
+        expect(@board.grid[4][4]).to eql("O")
+      end
+
+      it "places mark next to human mark" do
+        @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["O", "-", "-", "-", "-", "-", "-"],
+                       ["X", "O", "O", "X", "X", "-", "X"],
+                       ["X", "O", "X", "O", "X", "X", "X"]]
+        @computer.throw
+        expect(@board.grid[4][5]).to eql("O")
+      end
     end
 
     context "with 3 consecutive human marks in a row" do
@@ -66,6 +99,17 @@ describe Computer do
                        ["-", "-", "-", "-", "X", "X", "X"]]
         @computer.throw
         expect(@board.grid[5][3]).to eql("O")
+      end
+
+      it "places mark next to human mark" do
+        @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["O", "-", "-", "-", "O", "-", "-"],
+                       ["X", "X", "X", "-", "X", "X", "O"],
+                       ["X", "O", "X", "O", "X", "X", "X"]]
+        @computer.throw
+        expect(@board.grid[4][3]).to eql("O")
       end
 
       it "places mark next to human mark" do
