@@ -18,6 +18,8 @@ class Computer < Player
     board.position_mark_in_column(choose_column, self)
   end
 
+  private
+
   def choose_column
     6.times do |i|
       matches = []
