@@ -48,7 +48,11 @@ class Computer < Player
         end
       end
 
-      column = array.index("-") + 1
+      column = case array.index("X")
+               when 0..4 then array.index("X") + 2
+               when 5..6 then array.index("X") - 2
+               end
+
       action = attack_or_defend(computer_marks, human_marks, column, iteration)
       return action if action
 
