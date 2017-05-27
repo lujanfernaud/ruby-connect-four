@@ -21,11 +21,11 @@ class Computer < Player
   private
 
   def choose_column
-    6.times do |i|
+    3.times do |i|
       matches = []
       matches << check_rows(iteration: i)
       matches << check_columns(iteration: i)
-      matches << check_diagonals
+      # matches << check_diagonals
 
       good_match = proc { |match| match && board.column_available?(match) }
       column = matches.select(&good_match).first
@@ -36,6 +36,8 @@ class Computer < Player
   end
 
   def check_rows(iteration:)
+    matches = { human: {}, computer: {} }
+
     board.grid.each.with_index do |row, index|
       empty_slots = row.join.count("-")
 
@@ -45,8 +47,6 @@ class Computer < Player
         when 5    then return false
         end
       end
-
-      matches = { human: {}, computer: {} }
 
       2.upto(3) do |i|
         human    = Array.new(i) { "X" }
@@ -63,9 +63,9 @@ class Computer < Player
 
             if row[idx - 1] == "-" && row[idx + 2] == "-"
               matches[player_name][i] = [idx - 1, idx + 2].sample
-            elsif row[(idx - 3)..(idx - 1)].all? { |slot| slot == "-" }
+            elsif row[(idx - 2)..(idx - 1)].all? { |slot| slot == "-" }
               matches[player_name][i] = idx - (i - 1)
-            elsif row[(idx + 1)..(idx + 3)].all? { |slot| slot == "-" }
+            elsif row[(idx + 1)..(idx + 2)].all? { |slot| slot == "-" }
               matches[player_name][i] = idx + i
             end
           when 3
@@ -80,33 +80,52 @@ class Computer < Player
         end
       end
 
+      next if index < 5
+
       columns = [matches[:human][3], matches[:computer][3],
                  matches[:human][2], matches[:computer][2]]
-
-      column = columns.compact.first
+      column  = columns.compact.first
 
       return column + 1 if column
-
-      next if index < 5
       return false
     end
   end
 
   def check_columns(iteration:)
+    matches = { human: {}, computer: {} }
+
     7.times do |col|
       array = board.grid.map.with_index { |_row, index| board.grid[index][col] }
+      array.reverse!
 
-      computer_marks = array.join.count(mark)
-      human_marks    = array.join.count(human_mark)
-      empty_slots    = array.join.count("-")
-
+      empty_slots = array.join.count("-")
       next if empty_slots.zero?
 
-      column = col + 1
-      action = attack_or_defend(computer_marks, human_marks, column, iteration)
-      return action if action
+      2.upto(3) do |i|
+        human    = Array.new(i) { "X" }
+        computer = Array.new(i) { "O" }
+        players  = { human: human, computer: computer }
+
+        players.each do |player_name, player_marks|
+          idx = array.each_cons(i).map { |m| m == player_marks }.index(true)
+          next if idx.nil?
+          case i
+          when 2
+            next if iteration.zero?
+            matches[player_name][i] = col if array[idx + i] == "-"
+          when 3
+            matches[player_name][i] = col if array[idx + i] == "-"
+          end
+        end
+      end
 
       next if col < 6
+
+      columns = [matches[:human][3], matches[:computer][3],
+                 matches[:human][2], matches[:computer][2]]
+      column  = columns.compact.first
+
+      return column + 1 if column
       return false
     end
   end
