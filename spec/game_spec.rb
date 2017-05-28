@@ -202,18 +202,6 @@ describe Game do
   end
 
   describe "#check_for_winner" do
-    it "raises ArgumentError if no argument is given" do
-      expect { @game.check_for_winner }.to raise_error(ArgumentError)
-    end
-
-    it "raises ArgumentError if argument is not a Player object" do
-      expect { @game.check_for_winner("Sandi") }.to raise_error(ArgumentError)
-    end
-
-    it "takes a Player as an argument" do
-      expect { @game.check_for_winner(@game.human1) }.not_to raise_error
-    end
-
     it "checks for winner and calls #finish_game" do
       @game.board.grid = [["X", "X", "O", "X"],
                           ["O", "O", "O", "O"],
