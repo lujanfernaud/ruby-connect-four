@@ -97,8 +97,6 @@ class Game
   end
 
   def check_for_winner(last_player)
-    raise ArgumentError unless last_player.is_a?(Player)
-
     check_rows(last_player)
     check_columns(last_player)
     check_diagonals(last_player)
