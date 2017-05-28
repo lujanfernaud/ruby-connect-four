@@ -24,14 +24,6 @@ class Board
     @diagonals = DIAGONALS
   end
 
-  def create_grid
-    @grid = Array.new(6) { Array.new(7) { "-" } }
-  end
-
-  def reset
-    create_grid
-  end
-
   def print_board
     system "clear" or system "cls"
     puts "\n"
@@ -77,5 +69,15 @@ class Board
   def the_column_is_not_available(column)
     print_board
     puts "The column #{column} is full.\n\n"
+  end
+
+  def reset
+    create_grid
+  end
+
+  private
+
+  def create_grid
+    @grid = Array.new(6) { Array.new(7) { "-" } }
   end
 end
