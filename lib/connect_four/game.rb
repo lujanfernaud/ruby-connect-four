@@ -19,6 +19,11 @@ class Game
     exit_game
   end
 
+  def retry_turn(player)
+    player.throw(introduce_column(player, print_board: false))
+    check_for_winner(player)
+  end
+
   private
 
   def start
