@@ -1,4 +1,4 @@
-class Computer < Player
+class Computer
   attr_accessor :name
   attr_reader   :mark, :board, :human_mark
 
