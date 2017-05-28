@@ -19,6 +19,8 @@ class Game
     exit_game
   end
 
+  private
+
   def start
     loop do
       board.print_board
