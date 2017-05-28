@@ -1,5 +1,3 @@
-require "pry"
-
 class Computer < Player
   attr_accessor :name
   attr_reader   :mark, :board, :human_mark
@@ -20,12 +18,13 @@ class Computer < Player
 
   private
 
+  # TO-DO: Check if the position below the one selected is empty.
   def choose_column
     3.times do |i|
       matches = []
       matches << check_rows(iteration: i)
       matches << check_columns(iteration: i)
-      # matches << check_diagonals
+      matches << check_diagonals(iteration: i)
 
       good_match = proc { |match| match && board.column_available?(match) }
       column = matches.select(&good_match).first
@@ -37,6 +36,7 @@ class Computer < Player
 
   def check_rows(iteration:)
     matches = { human: {}, computer: {} }
+    empty   = proc { |slot| slot == "-" }
 
     board.grid.each.with_index do |row, index|
       empty_slots = row.join.count("-")
@@ -48,46 +48,57 @@ class Computer < Player
         end
       end
 
-      1.upto(3) do |i|
-        human    = Array.new(i) { "X" }
-        computer = Array.new(i) { "O" }
+      1.upto(3) do |count|
+        human    = Array.new(count) { "X" }
+        computer = Array.new(count) { "O" }
         players  = { human: human, computer: computer }
 
         players.each do |player_name, player_marks|
-          idx = row.each_cons(i).map { |m| m == player_marks }.index(true)
+          idx = row.each_cons(count).map { |m| m == player_marks }.index(true)
           next if idx.nil?
 
-          case i
+          case count
           when 1
-            next if iteration.zero?
+            next if iteration < 2
 
-            if idx > 0 && row[idx - 1] == "-" && row[idx + 1] == "-"
-              matches[player_name][i] = [idx - 1, idx + 1].sample
-            elsif idx > 1 && row[(idx - 2)..(idx - 1)].all? { |slot| slot == "-" }
-              matches[player_name][i] = idx - i
-            elsif row[(idx + i)..(idx + (i + 1))].all? { |slot| slot == "-" }
-              matches[player_name][i] = idx + i
+            if idx > 0 && [row[idx - 1], row[idx + 1]].all?(&empty)
+              matches[player_name][count] = [idx - 1, idx + 1].sample
+
+            elsif idx > 1 && row[(idx - 2)..(idx - 1)].all?(&empty)
+
+              matches[player_name][count] = idx - count
+
+            elsif row[(idx + count)..(idx + (count + 1))].all?(&empty)
+
+              matches[player_name][count] = idx + count
             end
+
           when 2
             next if iteration.zero?
 
-            if idx > 0 && row[idx - 1] == "-" && row[idx + 2] == "-"
-              matches[player_name][i] = [idx - 1, idx + 2].sample
-            elsif idx > 1 && row[(idx - 2)..(idx - 1)].all? { |slot| slot == "-" } ||
+            if idx > 0 && [row[idx - 1], row[idx + 2]].all?(&empty)
+              matches[player_name][count] = [idx - 1, idx + 2].sample
+
+            elsif idx > 1 && row[(idx - 2)..(idx - 1)].all?(&empty) ||
                   row[idx - 1] == "-" && row[idx - 2] == "X"
-              matches[player_name][i] = idx - (i - 1)
-            elsif row[(idx + i)..(idx + (i + 1))].all? { |slot| slot == "-" } ||
-                  row[idx + i] == "-" && row[idx + i + 1] == "X"
-              matches[player_name][i] = idx + i
+
+              matches[player_name][count] = idx - (count - 1)
+
+            elsif row[(idx + count)..(idx + (count + 1))].all?(&empty) ||
+                  row[idx + count] == "-" && row[idx + count + 1] == "X"
+
+              matches[player_name][count] = idx + count
+
             end
+
           when 3
 
-            if idx > 0 && row[idx - 1] == "-" && row[idx + 3] == "-"
-              matches[player_name][i] = [idx - 1, idx + 3].sample
+            if idx > 0 && [row[idx - 1], row[idx + 3]].all?(&empty)
+              matches[player_name][count] = [idx - 1, idx + 3].sample
             elsif idx > 1 && row[idx - 1] == "-"
-              matches[player_name][i] = idx - 1
+              matches[player_name][count] = idx - 1
             elsif row[idx + 3] == "-"
-              matches[player_name][i] = idx + 3
+              matches[player_name][count] = idx + 3
             end
           end
         end
@@ -114,20 +125,20 @@ class Computer < Player
       empty_slots = array.join.count("-")
       next if empty_slots.zero? || empty_slots == 7
 
-      2.upto(3) do |i|
-        human    = Array.new(i) { "X" }
-        computer = Array.new(i) { "O" }
+      2.upto(3) do |count|
+        human    = Array.new(count) { "X" }
+        computer = Array.new(count) { "O" }
         players  = { human: human, computer: computer }
 
         players.each do |player_name, player_marks|
-          idx = array.each_cons(i).map { |m| m == player_marks }.index(true)
+          idx = array.each_cons(count).map { |m| m == player_marks }.index(true)
           next if idx.nil?
-          case i
+          case count
           when 2
             next if iteration.zero?
-            matches[player_name][i] = col if array[idx + i] == "-"
+            matches[player_name][count] = col if array[idx + count] == "-"
           when 3
-            matches[player_name][i] = col if array[idx + i] == "-"
+            matches[player_name][count] = col if array[idx + count] == "-"
           end
         end
       end
@@ -143,97 +154,85 @@ class Computer < Player
     end
   end
 
-  def check_diagonals
-    2.times do |iteration|
-      column = diagonal_from_left_bottom(iteration)
-      return column if column
-      column = diagonal_from_right_bottom(iteration)
-      return column if column
-    end
+  def check_diagonals(iteration:)
+    matches = { human: {}, computer: {} }
 
-    false
-  end
+    board.diagonals.each do |side|
+      diagonals = build_diagonals_from(side)
 
-  def diagonal_from_left_bottom(iteration)
-    array = build_diagonal_left_array
+      diagonals.each.with_index do |diagonal, index|
+        col   = diagonal[0]
+        marks = diagonal[1..-1]
+        marks.reverse! if side[:side] == :right
 
-    computer_marks = array.join.count(mark)
-    human_marks    = array.join.count(human_mark)
-    empty_slots    = array.join.count("-")
-    column         = array.index("-")
+        empty_slots = marks.join.count("-")
 
-    return false if empty_slots.zero?
-    return false unless supportive_column_left(column)
+        if empty_slots.zero?
+          case index
+          when 0..4 then next
+          when 5    then return false
+          end
+        end
 
-    return diagonal_attack(computer_marks, column, iteration) if human_marks <= 3
-    return diagonal_defend(human_marks, column) if computer_marks <= 3
-  end
+        2.upto(3) do |count|
+          human    = Array.new(count) { "X" }
+          computer = Array.new(count) { "O" }
+          players  = { human: human, computer: computer }
 
-  def build_diagonal_left_array
-    array  = []
-    column = 0
-    board.grid.reverse.map.with_index do |_row, index|
-      array << board.grid.reverse[index][column]
-      column += 1
-    end
-    array
-  end
+          players.each do |player_name, player_marks|
+            idx = marks.each_cons(count).map { |m| m == player_marks }.index(true)
+            next if idx.nil?
+            case count
+            when 2
+              next if iteration.zero?
+              matches[player_name][count] = col + (idx + count) if marks[idx + count] == "-"
+            when 3
+              matches[player_name][count] = col + (idx + count) if marks[idx + count] == "-"
+            end
+          end
+        end
+      end
 
-  def supportive_column_left(column)
-    array = []
-    board.grid.reverse.each.with_index do |_row, index|
-      array << board.grid.reverse[index][column]
-    end
-    column == array.index("-")
-  end
+      next if side[:side] == :left
 
-  def diagonal_from_right_bottom(iteration)
-    array = build_diagonal_right_array
+      return false if matches[:human].empty? && matches[:computer].empty?
 
-    computer_marks = array.join.count(mark)
-    human_marks    = array.join.count(human_mark)
-    empty_slots    = array.join.count("-")
-    column         = array.count { |v| v == "-" } - 1
+      columns = [matches[:computer][3], matches[:human][3],
+                 matches[:human][2], matches[:computer][2]]
+      column  = columns.compact.first
 
-    return false if empty_slots.zero?
-    return false unless supportive_column_right(column)
-
-    return diagonal_attack(computer_marks, column, iteration) if human_marks <= 3
-    return diagonal_defend(human_marks, column) if computer_marks <= 3
-  end
-
-  def build_diagonal_right_array
-    array  = []
-    column = 0
-    board.grid.each.with_index do |_row, index|
-      array << board.grid[index][column]
-      column += 1
-    end
-    array
-  end
-
-  def supportive_column_right(column)
-    array = []
-    board.grid.each.with_index do |_row, index|
-      array << board.grid[index][column]
-    end
-
-    column == array.count { |v| v == "-" } - 1
-  end
-
-  def diagonal_attack(computer_marks, column, iteration)
-    case computer_marks
-    when 3 then column + 1
-    when 2 then column + 1 if iteration == 1
-    else false
+      return column + 1 if column
+      return false
     end
   end
 
-  def diagonal_defend(human_marks, column)
-    case human_marks
-    when 2..3 then column + 1
-    else false
+  def build_diagonals_from(side)
+    diagonals = []
+    side.each_value do |pair|
+      next if pair == :left || pair == :right
+
+      y = pair[:start][:y]
+      x = pair[:start][:x]
+
+      add_diagonal(pair, side[:side], y, x, diagonals)
     end
+    diagonals
+  end
+
+  def add_diagonal(diagonal, side, y, x, diagonals)
+    start    = diagonal[:start][:x]
+    finish   = diagonal[:finish][:x]
+    diagonal = [start]
+
+    (start..finish).each do
+      diagonal << board.grid[y][x]
+      y  = case side
+           when :left  then y - 1
+           when :right then y + 1
+           end
+      x += 1
+    end
+    diagonals << diagonal
   end
 
   def choose_random_column
