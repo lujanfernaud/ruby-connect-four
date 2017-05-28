@@ -77,13 +77,7 @@ describe Board do
 
   describe "#reset" do
     it "resets board" do
-      new_grid    = Array.new(6) { Array.new(7) { "-" } }
-      @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
-                     ["-", "-", "-", "-", "-", "-", "-"],
-                     ["-", "-", "-", "-", "-", "-", "X"],
-                     ["O", "X", "X", "-", "-", "-", "X"],
-                     ["O", "X", "X", "-", "-", "-", "X"],
-                     ["O", "X", "O", "-", "-", "-", "X"]]
+      new_grid = Array.new(6) { Array.new(7) { "-" } }
       @board.reset
       expect(@board.grid).to match(new_grid)
     end
