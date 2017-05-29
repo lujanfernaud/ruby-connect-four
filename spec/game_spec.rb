@@ -46,7 +46,7 @@ describe Game do
       expect(@game.board).to receive(:print_board)
       expect(@game).to receive(:set_players)
       expect(@game).to receive(:ask_players_names) if @game.players == 2
-      expect(@game).to receive(:start)
+      expect(@game).to receive(:start_game)
       @game.setup
     end
   end

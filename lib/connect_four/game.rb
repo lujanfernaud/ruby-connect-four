@@ -15,7 +15,7 @@ class Game
     board.print_board
     set_players
     ask_players_names if players == 2
-    start
+    start_game
   rescue Interrupt
     exit_game
   end
@@ -40,7 +40,7 @@ class Game
 
   private
 
-  def start
+  def start_game
     loop do
       board.print_board
       first_turn
