@@ -20,7 +20,8 @@ class Game
   end
 
   def retry_turn(player)
-    player.throw(introduce_column(player, print_board: false))
+    column = introduce_column(player, print_board: false)
+    player.throw(column)
     check_for_winner(player)
   end
 
