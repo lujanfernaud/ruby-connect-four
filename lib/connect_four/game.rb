@@ -26,6 +26,21 @@ class Game
     judge.check_for_winner(player)
   end
 
+  def try_again
+    loop do
+      case STDIN.gets.chomp.downcase
+      when "y"
+        board.reset
+        start
+      when "n"
+        exit_game
+      else
+        board.print_board
+        puts "Please type 'y' or 'n'."
+      end
+    end
+  end
+
   private
 
   def start
@@ -101,21 +116,6 @@ class Game
     board.print_board
     puts "Player 2 name:"
     human2.name = STDIN.gets.chomp
-  end
-
-  def try_again
-    loop do
-      case STDIN.gets.chomp.downcase
-      when "y"
-        board.reset
-        start
-      when "n"
-        exit_game
-      else
-        board.print_board
-        puts "Please type 'y' or 'n'."
-      end
-    end
   end
 
   def exit_game
