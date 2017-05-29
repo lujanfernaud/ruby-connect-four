@@ -29,11 +29,8 @@ class Game
   def try_again
     loop do
       case STDIN.gets.chomp.downcase
-      when "y"
-        board.reset
-        start
-      when "n"
-        exit_game
+      when "y" then restart_game
+      when "n" then exit_game
       else
         board.print_board
         puts "Please type 'y' or 'n'."
@@ -108,6 +105,11 @@ class Game
     board.print_board
     puts "Player 2 name:"
     human2.name = STDIN.gets.chomp
+  end
+
+  def restart_game
+    board.reset
+    start
   end
 
   def exit_game
