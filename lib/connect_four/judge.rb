@@ -16,40 +16,29 @@ class Judge
 
   private
 
+  def count_marks(last_player, line)
+    match = line.join.match(/#{last_player.mark}{4}/)
+    count = match[0].count(last_player.mark) if match
+    return the_winner_is(last_player) if count == 4
+  end
+
   def check_rows(last_player)
     board.grid.each do |row|
-      row.each.with_index do |_mark, index|
-        break if index == 4
-        slice = row.slice(index...index + 4)
-        the_winner_is(last_player) if
-          slice.all? { |mark| mark == last_player.mark }
-      end
+      count_marks(last_player, row)
     end
   end
 
   def check_columns(last_player)
     7.times do |col|
       column = board.grid.map { |row| row[col] }
-
-      column.each.with_index do |_mark, index|
-        break if index == 3
-        slice = column.slice(index...index + 4)
-        return the_winner_is(last_player) if
-          slice.all? { |mark| mark == last_player.mark }
-      end
+      count_marks(last_player, column)
     end
   end
 
   def check_diagonals(last_player)
     board.diagonals.each do |side|
-      marks = build_diagonals_from(side)
-
-      marks.each.with_index do |_mark, index|
-        break if index == marks.length - 5
-        slice = marks.slice(index...index + 4)
-        return the_winner_is(last_player) if
-          slice.all? { |mark| mark == last_player.mark }
-      end
+      diagonal = build_diagonals_from(side)
+      count_marks(last_player, diagonal)
     end
   end
 
@@ -78,6 +67,7 @@ class Judge
            end
       x += 1
     end
+    marks << "|"
   end
 
   def finish_game
