@@ -38,10 +38,32 @@ describe Computer do
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "-", "-"],
-                       ["-", "-", "-", "-", "-", "O", "O"],
-                       ["-", "-", "-", "-", "-", "X", "X"]]
+                       ["O", "-", "-", "-", "-", "-", "-"],
+                       ["X", "X", "-", "-", "-", "-", "-"]]
         @computer.throw
-        expect(@board.grid[5][4]).to eql("O")
+        expect(@board.grid[5][2]).to eql("O")
+      end
+
+      it "places mark next to human mark" do
+        @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["O", "O", "-", "-", "-", "-", "-"],
+                       ["X", "X", "X", "-", "-", "-", "-"]]
+        @computer.throw
+        expect(@board.grid[5][3]).to eql("O")
+      end
+
+      it "places mark next to human mark" do
+        @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["X", "-", "-", "X", "-", "-", "O"]]
+        @computer.throw
+        expect(@board.grid[5][1]).to eql("O")
       end
 
       it "places mark next to human mark" do
@@ -52,7 +74,18 @@ describe Computer do
                        ["-", "-", "-", "O", "-", "-", "-"],
                        ["-", "-", "X", "X", "-", "-", "-"]]
         @computer.throw
-        expect([@board.grid[5][1], @board.grid[5][4]]).to include("O")
+        expect(@board.grid[5][4]).to eql("O")
+      end
+
+      it "places mark next to human mark" do
+        @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "O"],
+                       ["-", "-", "-", "-", "-", "X", "X"]]
+        @computer.throw
+        expect(@board.grid[5][3]).to eql("O")
       end
 
       it "places mark next to human mark" do
@@ -131,9 +164,9 @@ describe Computer do
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "O", "O"],
-                       ["X", "-", "-", "-", "O", "X", "X"]]
+                       ["X", "-", "-", "X", "O", "X", "X"]]
         @computer.throw
-        expect(@board.grid[4][4]).to eql("O")
+        expect(@board.grid[4][3]).to eql("O")
       end
 
       it "places mark next to computer mark" do
@@ -144,7 +177,7 @@ describe Computer do
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "O", "O", "-", "X", "X"]]
         @computer.throw
-        expect([@board.grid[5][1], @board.grid[5][4]]).to include("O")
+        expect([@board.grid[5][0], @board.grid[5][1]]).to include("O")
       end
     end
 
@@ -185,6 +218,19 @@ describe Computer do
       end
     end
 
+    context "with 2 consecutive computer marks in a column" do
+      it "places mark on top of computer mark" do
+        @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "-"],
+                       ["-", "-", "-", "-", "-", "-", "O"],
+                       ["-", "O", "-", "-", "O", "X", "X"],
+                       ["-", "O", "-", "-", "X", "O", "X"]]
+        @computer.throw
+        expect(@board.grid[3][1]).to eql("O")
+      end
+    end
+
     context "with 3 consecutive human marks in a column" do
       it "places mark on top of human mark" do
         @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
@@ -212,27 +258,26 @@ describe Computer do
     end
 
     context "with 2 consecutive human marks in a diagonal" do
-      it "places mark on corresponding column" do
+      it "blocks human diagonal" do
         @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "X", "O", "-", "-", "-", "-"],
-                       ["X", "O", "X", "-", "-", "O", "X"]]
+                       ["X", "O", "X", "X", "-", "O", "X"]]
         @computer.throw
         expect(@board.grid[3][2]).to eql("O")
       end
 
-      it "places mark on corresponding column
-          (it's not checking for the position below the one selected)" do
+      it "places mark on computer diagonal" do
         @board.grid = [["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "-", "-"],
                        ["-", "-", "-", "-", "-", "-", "-"],
-                       ["-", "-", "-", "X", "-", "-", "-"],
-                       ["-", "X", "O", "O", "X", "O", "X"]]
+                       ["-", "X", "O", "O", "-", "-", "-"],
+                       ["X", "O", "X", "X", "-", "O", "X"]]
         @computer.throw
-        expect(@board.grid[4][2]).to eql("O")
+        expect(@board.grid[3][3]).to eql("O")
       end
     end
 
