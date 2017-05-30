@@ -1,25 +1,43 @@
 class Game
-  attr_accessor :players, :human1, :human2
-  attr_reader   :board, :computer
+  attr_accessor :human1, :human2
+  attr_reader   :board,  :judge
 
   def initialize
-    @board    = Board.new(self)
-    @players  = 1
-    @human1   = Player.new(name: "Human 1", mark: "X", board: board)
-    @human2   = Player.new(name: "Human 2", mark: "O", board: board)
-    @computer = Computer.new(mark: "O", human_mark: human1.mark, board: board)
+    @board  = Board.new(self)
+    @judge  = Judge.new(self, board)
+    @human1 = Player.new(name: "Human 1", mark: "X", board: board)
+    @human2 = Player.new(name: "Human 2", mark: "O", board: board)
   end
 
   def setup
     board.print_board
-    set_players
-    ask_players_names if players == 2
-    start
+    ask_players_names
+    start_game
   rescue Interrupt
     exit_game
   end
 
-  def start
+  def retry_turn(player)
+    column = introduce_column(player, print_board: false)
+    player.throw(column)
+    judge.check_for_winner(player)
+  end
+
+  def try_again
+    loop do
+      case STDIN.gets.chomp.downcase
+      when "y" then restart_game
+      when "n" then exit_game
+      else
+        board.print_board
+        puts "Please type 'y' or 'n'."
+      end
+    end
+  end
+
+  private
+
+  def start_game
     loop do
       board.print_board
       first_turn
@@ -31,33 +49,24 @@ class Game
 
   def first_turn
     human1.throw(introduce_column(human1))
-    check_for_winner(human1)
+    judge.check_for_winner(human1)
   end
 
   def second_turn
-    case players
-    when 1
-      computer.throw
-      check_for_winner(computer)
-    when 2
-      human2.throw(introduce_column(human2))
-      check_for_winner(human2)
-    end
+    human2.throw(introduce_column(human2))
+    judge.check_for_winner(human2)
   end
 
-  def introduce_column(player = computer, print_board: true)
+  def introduce_column(player, print_board: true)
     board.print_board if print_board
-    case players
-    when 1 then puts "Introduce a column:"
-    when 2 then puts "#{player.name}, introduce a column:"
-    end
+    puts "#{player.name}, introduce a column:"
     check_inputted_column
   end
 
   def check_inputted_column
     loop do
       input = STDIN.gets.chomp
-      return input if input =~ /^[1-4]$/
+      return input if input =~ /^[1-7]$/
       exit_game    if input == "exit".downcase
 
       board.print_board
@@ -65,116 +74,18 @@ class Game
     end
   end
 
-  def set_players
-    puts "Choose players, 1 or 2?"
-
-    loop do
-      input = STDIN.gets.chomp.to_i
-      return self.players = input if input.to_s =~ /^[1-2]$/
-
-      board.print_board
-      puts "1 or 2 players?"
-    end
-  end
-
   def ask_players_names
-    ask_human1_name
-    ask_human2_name
-  end
-
-  def ask_human1_name
     board.print_board
     puts "Player 1 name:"
     human1.name = STDIN.gets.chomp
-  end
-
-  def ask_human2_name
     board.print_board
     puts "Player 2 name:"
     human2.name = STDIN.gets.chomp
   end
 
-  def check_for_winner(last_player)
-    raise ArgumentError unless last_player.is_a?(Player)
-
-    check_rows(last_player)
-    check_columns(last_player)
-    check_diagonals(last_player)
-
-    finish_game if there_is_no_winner?
-  end
-
-  def check_rows(last_player)
-    board.grid.each do |row|
-      the_winner_is(last_player) if row.all? { |mark| mark == last_player.mark }
-    end
-  end
-
-  def check_columns(last_player)
-    4.times do |column|
-      array = []
-      board.grid.each do |row|
-        array << true if row[column] == last_player.mark
-      end
-
-      return the_winner_is(last_player) if array.length == 4
-    end
-  end
-
-  def check_diagonals(last_player)
-    grid = board.grid
-
-    2.times do
-      check_marks_in_diagonal(grid, last_player)
-      grid = grid.reverse
-    end
-  end
-
-  def check_marks_in_diagonal(grid, last_player)
-    4.times do |column|
-      array = []
-      grid.each do |row|
-        array << true if row[column] == last_player.mark
-        column += 1
-      end
-
-      return the_winner_is(last_player) if array.length == 4
-    end
-  end
-
-  def finish_game
-    board.print_board
-    puts "There's no winner. Try again? (y/n)"
-    try_again
-  end
-
-  def there_is_no_winner?
-    board.grid.flatten.none? { |value| value == "-" }
-  end
-
-  def the_winner_is(last_player)
-    board.print_board
-    case last_player.name
-    when "Computer" then puts "Computer WINS! Try again? (y/n)"
-    when "Human 1"  then puts "You WIN! Try again? (y/n)"
-    else puts "#{last_player.name} WINS! Try again? (y/n)"
-    end
-    try_again
-  end
-
-  def try_again
-    loop do
-      case STDIN.gets.chomp.downcase
-      when "y"
-        board.reset
-        start
-      when "n"
-        exit_game
-      else
-        board.print_board
-        puts "Please type 'y' or 'n'."
-      end
-    end
+  def restart_game
+    board.reset
+    start_game
   end
 
   def exit_game

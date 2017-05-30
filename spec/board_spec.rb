@@ -4,6 +4,12 @@ describe Board do
   before do
     @game   = Game.new
     @board  = Board.new(@game)
+    @board.grid = [["-", "-", "-", "-", "-", "-", "O"],
+                   ["-", "-", "-", "-", "-", "-", "X"],
+                   ["-", "-", "-", "-", "-", "-", "O"],
+                   ["-", "-", "-", "-", "-", "-", "X"],
+                   ["-", "-", "-", "-", "-", "-", "O"],
+                   ["-", "X", "O", "-", "-", "O", "X"]]
     @player = @game.human1
   end
 
@@ -12,9 +18,14 @@ describe Board do
       raise unless @board.game
     end
 
-    it "allows reading a writing for :grid" do
+    it "allows reading and writing for :grid" do
       @board.grid[0][1] = "X"
       expect(@board.grid[0][1]).to eql("X")
+      @board.grid[0][1] = "-"
+    end
+
+    it "allows reading for :diagonals" do
+      raise unless @board.diagonals
     end
   end
 
@@ -22,7 +33,7 @@ describe Board do
     it "clears screen and puts board" do
       expect(@board).to receive(:system).with("clear")
       expect(@board).to receive(:system).with("cls")
-      expect(STDOUT).to receive(:puts).exactly(17).times
+      expect(STDOUT).to receive(:puts).exactly(21).times
       @board.print_board
     end
   end
@@ -32,51 +43,41 @@ describe Board do
       expect { @board.position_mark_in_column(2, @player) }.not_to raise_error
     end
 
-    it "checks what position is available in the column and puts mark" do
-      @board.grid[3][1] = "X"
+    it "checks what position is available in the column and places mark" do
+      @board.grid[5][1] = "X"
       @board.position_mark_in_column(2, @player)
-      expect(@board.grid[2][1]).to eql("X")
+      expect(@board.grid[4][1]).to eql("X")
     end
   end
 
-  describe "#position_available?" do
-    before do
-      @board.grid = [["X", "-", "-", "-"],
-                     ["O", "-", "O", "O"],
-                     ["O", "X", "X", "X"],
-                     ["O", "X", "O", "X"]]
-    end
-
-    it "checks if there's an empty position in the column" do
+  describe "#column_available?" do
+    it "checks and returns 'true'" do
       column = 2
       expect(@board.column_available?(column)).to eql(true)
       @board.column_available?(column)
     end
 
-    it "checks if there's an empty position in the column" do
-      column = 1
+    it "checks and returns 'false'" do
+      column = 7
       expect(@board.column_available?(column)).to eql(false)
       @board.column_available?(column)
     end
   end
 
-  describe "#the_position_is_not_available" do
-    it "prints board and error message" do
+  describe "#the_column_is_full" do
+    it "prints board, error message and calls game.retry_turn" do
       column = 1
       expect(@board).to receive(:print_board)
       expect(STDOUT).to receive(:puts)
         .with("The column #{column} is full.\n\n")
-      @board.the_column_is_not_available(column)
+      expect(@game).to receive(:retry_turn).with(@player)
+      @board.the_column_is_full(column, @player)
     end
   end
 
   describe "#reset" do
     it "resets board" do
-      new_grid    = Array.new(4) { Array.new(4) { "-" } }
-      @board.grid = [["X", "X", "O", "-"],
-                     ["O", "X", "O", "O"],
-                     ["O", "X", "X", "X"],
-                     ["O", "X", "O", "X"]]
+      new_grid = Array.new(6) { Array.new(7) { "-" } }
       @board.reset
       expect(@board.grid).to match(new_grid)
     end
