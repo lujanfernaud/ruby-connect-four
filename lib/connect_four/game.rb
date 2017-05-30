@@ -1,20 +1,17 @@
 class Game
-  attr_accessor :players, :human1, :human2
-  attr_reader   :board, :computer, :judge
+  attr_accessor :human1, :human2
+  attr_reader   :board,  :judge
 
   def initialize
-    @board    = Board.new(self)
-    @judge    = Judge.new(self, board)
-    @players  = 1
-    @human1   = Player.new(name: "Human 1", mark: "X", board: board)
-    @human2   = Player.new(name: "Human 2", mark: "O", board: board)
-    @computer = Computer.new(mark: "O", human_mark: human1.mark, board: board)
+    @board  = Board.new(self)
+    @judge  = Judge.new(self, board)
+    @human1 = Player.new(name: "Human 1", mark: "X", board: board)
+    @human2 = Player.new(name: "Human 2", mark: "O", board: board)
   end
 
   def setup
     board.print_board
-    set_players
-    ask_players_names if players == 2
+    ask_players_names
     start_game
   rescue Interrupt
     exit_game
@@ -56,22 +53,13 @@ class Game
   end
 
   def second_turn
-    case players
-    when 1
-      computer.throw
-      judge.check_for_winner(computer)
-    when 2
-      human2.throw(introduce_column(human2))
-      judge.check_for_winner(human2)
-    end
+    human2.throw(introduce_column(human2))
+    judge.check_for_winner(human2)
   end
 
-  def introduce_column(player = computer, print_board: true)
+  def introduce_column(player, print_board: true)
     board.print_board if print_board
-    case players
-    when 1 then puts "Introduce a column:"
-    when 2 then puts "#{player.name}, introduce a column:"
-    end
+    puts "#{player.name}, introduce a column:"
     check_inputted_column
   end
 
@@ -86,18 +74,6 @@ class Game
     end
   end
 
-  def set_players
-    puts "Choose players, 1 or 2?"
-
-    loop do
-      input = STDIN.gets.chomp.to_i
-      return self.players = input if input.to_s =~ /^[1-2]$/
-
-      board.print_board
-      puts "1 or 2 players?"
-    end
-  end
-
   def ask_players_names
     board.print_board
     puts "Player 1 name:"
@@ -109,7 +85,7 @@ class Game
 
   def restart_game
     board.reset
-    start
+    start_game
   end
 
   def exit_game

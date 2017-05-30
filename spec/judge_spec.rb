@@ -3,7 +3,6 @@ require "spec_helper"
 describe Judge do
   before do
     @game         = Game.new
-    @game.players = 2
     @judge        = @game.judge
     @board        = @judge.board
     @player1      = @game.human1
