@@ -62,10 +62,7 @@ class Judge
 
     (start..finish).each do
       marks << board.grid[y][x]
-      y  = case side
-           when :left  then y - 1
-           when :right then y + 1
-           end
+      y  = side == :left ? y - 1 : y + 1
       x += 1
     end
     marks << "|"
