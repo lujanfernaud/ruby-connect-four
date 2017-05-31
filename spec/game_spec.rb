@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Game do
-  before :all do
+  before do
     @game = Game.new
   end
 
@@ -39,6 +39,31 @@ describe Game do
       expect(STDOUT).to receive(:puts).with("#{player.name}, introduce a column:")
       allow(STDIN).to receive(:gets).and_return(column)
       @game.retry_turn(player)
+    end
+  end
+
+  describe "#try_again" do
+    before do
+      allow(@game).to receive(:loop).and_yield
+    end
+
+    it "restarts game if 'y'" do
+      allow(STDIN).to receive(:gets).and_return("y")
+      expect(@game).to receive(:restart_game)
+      @game.try_again
+    end
+
+    it "exits game if 'n'" do
+      allow(STDIN).to receive(:gets).and_return("n")
+      expect(@game).to receive(:exit_game)
+      @game.try_again
+    end
+
+    it "asks to type 'y' or 'n'" do
+      allow(STDIN).to receive(:gets).and_return("maybe")
+      expect(@game.board).to receive(:print_board)
+      expect(STDOUT).to receive(:puts).with("Please type 'y' or 'n'.")
+      @game.try_again
     end
   end
 end
