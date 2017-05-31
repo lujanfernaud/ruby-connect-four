@@ -3,25 +3,26 @@ require "spec_helper"
 describe Game do
   let(:player1) { Player.new(name: "Sandi", mark: "X") }
   let(:player2) { Player.new(name: "Matz", mark: "O") }
-  let(:game)    { Game.new(player1, player2) }
+  let(:players) { [player1, player2] }
+  let(:game)    { Game.new(players) }
 
   describe "attributes" do
     it "has a board" do
       expect(game.board).to be_a(Board)
     end
 
-    it "has human players" do
-      expect(game.human1).to be_a(Player)
-      expect(game.human2).to be_a(Player)
+    it "has a players array" do
+      expect(players).to match([player1, player2])
+    end
+
+    it "each player is a Player object" do
+      players.each { |player| expect(player).to be_a(Player) }
     end
   end
 
   describe "#start_game" do
-    it "prints board and gives turns to players" do
-      allow(game).to receive(:loop).and_yield
-      expect(game.board).to receive(:print_board)
-      expect(game).to receive(:first_turn)
-      expect(game).to receive(:second_turn)
+    it "gives turns to players" do
+      expect(game).to receive(:players_turns)
       game.start_game
     end
   end

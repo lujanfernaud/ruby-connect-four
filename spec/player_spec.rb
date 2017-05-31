@@ -3,7 +3,8 @@ require "spec_helper"
 describe Player do
   let(:player1) { Player.new(name: "Sandi", mark: "X") }
   let(:player2) { Player.new(name: "Matz", mark: "O") }
-  let(:game)    { Game.new(player1, player2) }
+  let(:players) { [player1, player2] }
+  let(:game)    { Game.new(players) }
   let(:board)   { game.board }
 
   describe "attributes" do
