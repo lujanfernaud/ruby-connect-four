@@ -37,14 +37,14 @@ describe Board do
     end
   end
 
-  describe "#position_mark_in_column" do
+  describe "#place_mark_in_column" do
     it "takes column and player as arguments" do
-      expect { board.position_mark_in_column(2, player1) }.not_to raise_error
+      expect { board.place_mark_in_column(2, player1) }.not_to raise_error
     end
 
     it "checks what position is available in the column and places mark" do
       board.grid[5][1] = "X"
-      board.position_mark_in_column(2, player1)
+      board.place_mark_in_column(1, player1)
       expect(board.grid[4][1]).to eql("X")
     end
   end
@@ -68,7 +68,7 @@ describe Board do
       column = 1
       expect(printer).to receive(:print_board)
       expect(STDOUT).to receive(:puts)
-        .with("The column #{column} is full.\n\n")
+        .with("The column #{column + 1} is full.\n\n")
       expect(game).to receive(:retry_turn).with(player1)
       board.the_column_is_full(column, player1)
     end
