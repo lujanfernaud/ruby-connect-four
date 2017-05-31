@@ -6,8 +6,4 @@ class Player
     @name = name
     @mark = mark
   end
-
-  def throw(column, board)
-    board.position_mark_in_column(column.to_i, self)
-  end
 end
