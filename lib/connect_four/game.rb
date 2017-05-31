@@ -14,7 +14,7 @@ class Game
   end
 
   def retry_turn(player)
-    column = introduce_column(player, print_board: false)
+    column = ask_for_column(player, print_board: false)
     player.throw(column, board)
     judge.check_for_winner(player)
   end
@@ -36,14 +36,14 @@ class Game
   def players_turns
     loop do
       players.each do |player|
-        column = introduce_column(player)
+        column = ask_for_column(player)
         player.throw(column, board)
         judge.check_for_winner(player)
       end
     end
   end
 
-  def introduce_column(player, print_board: true)
+  def ask_for_column(player, print_board: true)
     board.print_board if print_board
     puts "#{player.name}, introduce a column:"
     check_inputted_column
