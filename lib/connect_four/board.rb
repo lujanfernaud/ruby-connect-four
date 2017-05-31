@@ -15,25 +15,9 @@ class Board
   def print_board
     system "clear" or system "cls"
     puts "\n"
-    puts "   #############################"
-    puts "   #                           #"
-    puts "   #         CONNECT 4         #"
-    puts "   #                           #"
-    puts "   #############################"
+    print_game_title
     puts "\n"
-    puts "     1 | 2 | 3 | 4 | 5 | 6 | 7"
-    puts "   -----------------------------"
-    puts "   | #{grid[0][0]}   #{grid[0][1]}   #{grid[0][2]}   #{grid[0][3]}   #{grid[0][4]}   #{grid[0][5]}   #{grid[0][6]} |"
-    puts "   -----------------------------"
-    puts "   | #{grid[1][0]}   #{grid[1][1]}   #{grid[1][2]}   #{grid[1][3]}   #{grid[1][4]}   #{grid[1][5]}   #{grid[1][6]} |"
-    puts "   -----------------------------"
-    puts "   | #{grid[2][0]}   #{grid[2][1]}   #{grid[2][2]}   #{grid[2][3]}   #{grid[2][4]}   #{grid[2][5]}   #{grid[2][6]} |"
-    puts "   -----------------------------"
-    puts "   | #{grid[3][0]}   #{grid[3][1]}   #{grid[3][2]}   #{grid[3][3]}   #{grid[3][4]}   #{grid[3][5]}   #{grid[3][6]} |"
-    puts "   -----------------------------"
-    puts "   | #{grid[4][0]}   #{grid[4][1]}   #{grid[4][2]}   #{grid[4][3]}   #{grid[4][4]}   #{grid[4][5]}   #{grid[4][6]} |"
-    puts "   -----------------------------"
-    puts "   | #{grid[5][0]}   #{grid[5][1]}   #{grid[5][2]}   #{grid[5][3]}   #{grid[5][4]}   #{grid[5][5]}   #{grid[5][6]} |"
+    print_game_grid
     puts "\n"
   end
 
@@ -66,5 +50,40 @@ class Board
 
   def create_grid
     @grid = Array.new(6) { Array.new(7) { "-" } }
+  end
+
+  def print_game_title
+    puts "   #############################"
+    puts "   #                           #"
+    puts "   #         CONNECT 4         #"
+    puts "   #                           #"
+    puts "   #############################"
+  end
+
+  def print_game_grid
+    puts "     1 | 2 | 3 | 4 | 5 | 6 | 7"
+    puts "   -----------------------------"
+    print_row(0)
+    puts "   -----------------------------"
+    print_row(1)
+    puts "   -----------------------------"
+    print_row(2)
+    puts "   -----------------------------"
+    print_row(3)
+    puts "   -----------------------------"
+    print_row(4)
+    puts "   -----------------------------"
+    print_row(5)
+  end
+
+  def print_row(row)
+    grid[row].each.with_index do |_column, column_index|
+      print "   | " if column_index.zero?
+      print "   "   if (1..6).cover?(column_index)
+
+      print "#{grid[row][column_index]}"
+
+      print " |\n" if column_index == 6
+    end
   end
 end
