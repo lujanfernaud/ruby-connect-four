@@ -1,16 +1,16 @@
 class GameSetup
-  attr_accessor :human1, :human2
-  attr_reader   :game,   :board
+  attr_accessor :player1, :player2
+  attr_reader   :players, :game, :board
 
   def initialize
-    @human1 = Player.new(name: "Human 1", mark: "X")
-    @human2 = Player.new(name: "Human 2", mark: "O")
-    @game   = Game.new(human1, human2)
-    @board  = game.board
+    @player1 = Player.new(name: "Player 1", mark: "X")
+    @player2 = Player.new(name: "Player 2", mark: "O")
+    @players = [player1, player2]
+    @game    = Game.new(players)
+    @board   = game.board
   end
 
   def setup
-    board.print_board
     ask_players_names
     game.start_game
   rescue Interrupt
@@ -22,9 +22,9 @@ class GameSetup
   def ask_players_names
     board.print_board
     puts "Player 1 name:"
-    human1.name = STDIN.gets.chomp
+    player1.name = STDIN.gets.chomp
     board.print_board
     puts "Player 2 name:"
-    human2.name = STDIN.gets.chomp
+    player2.name = STDIN.gets.chomp
   end
 end
