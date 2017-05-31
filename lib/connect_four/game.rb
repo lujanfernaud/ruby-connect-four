@@ -24,9 +24,7 @@ class Game
       case STDIN.gets.chomp.downcase
       when "y" then restart_game
       when "n" then exit_game
-      else
-        board.print_board
-        puts "Please type 'y' or 'n'."
+      else type_yes_or_no
       end
     end
   end
@@ -59,6 +57,11 @@ class Game
       board.print_board
       puts "'#{input}' is not a correct column.\n\nIntroduce a column:"
     end
+  end
+
+  def type_yes_or_no
+    board.print_board
+    puts "Please type 'y' or 'n'."
   end
 
   def restart_game
