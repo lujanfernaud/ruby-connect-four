@@ -1,20 +1,14 @@
 class Game
-  attr_accessor :human1, :human2
-  attr_reader   :board,  :judge
+  attr_reader :board, :judge, :players
 
-  def initialize(human1, human2)
-    @board  = Board.new(self)
-    @judge  = Judge.new(self, board)
-    @human1 = human1
-    @human2 = human2
+  def initialize(players)
+    @board   = Board.new(self)
+    @judge   = Judge.new(self, board)
+    @players = players
   end
 
   def start_game
-    loop do
-      board.print_board
-      first_turn
-      second_turn
-    end
+    players_turns
   rescue Interrupt
     exit_game
   end
@@ -39,16 +33,14 @@ class Game
 
   private
 
-  def first_turn
-    column = introduce_column(human1)
-    human1.throw(column, board)
-    judge.check_for_winner(human1)
-  end
-
-  def second_turn
-    column = introduce_column(human2)
-    human2.throw(column, board)
-    judge.check_for_winner(human2)
+  def players_turns
+    loop do
+      players.each do |player|
+        column = introduce_column(player)
+        player.throw(column, board)
+        judge.check_for_winner(player)
+      end
+    end
   end
 
   def introduce_column(player, print_board: true)
@@ -60,6 +52,7 @@ class Game
   def check_inputted_column
     loop do
       input = STDIN.gets.chomp
+
       return input if input =~ /^[1-7]$/
       exit_game    if input == "exit".downcase
 
