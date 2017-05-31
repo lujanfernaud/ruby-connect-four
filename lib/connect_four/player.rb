@@ -1,14 +1,13 @@
 class Player
   attr_accessor :name
-  attr_reader   :board, :mark
+  attr_reader   :mark
 
-  def initialize(name:, mark:, board: [])
-    @name  = name
-    @mark  = mark
-    @board = board
+  def initialize(name:, mark:)
+    @name = name
+    @mark = mark
   end
 
-  def throw(column)
+  def throw(column, board)
     return board.the_column_is_full(column, self) unless
       board.column_available?(column.to_i)
 

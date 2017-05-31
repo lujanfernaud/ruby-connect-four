@@ -2,24 +2,26 @@ class Game
   attr_accessor :human1, :human2
   attr_reader   :board,  :judge
 
-  def initialize
+  def initialize(human1, human2)
     @board  = Board.new(self)
     @judge  = Judge.new(self, board)
-    @human1 = Player.new(name: "Human 1", mark: "X", board: board)
-    @human2 = Player.new(name: "Human 2", mark: "O", board: board)
+    @human1 = human1
+    @human2 = human2
   end
 
-  def setup
-    board.print_board
-    ask_players_names
-    start_game
+  def start_game
+    loop do
+      board.print_board
+      first_turn
+      second_turn
+    end
   rescue Interrupt
     exit_game
   end
 
   def retry_turn(player)
     column = introduce_column(player, print_board: false)
-    player.throw(column)
+    player.throw(column, board)
     judge.check_for_winner(player)
   end
 
@@ -37,23 +39,15 @@ class Game
 
   private
 
-  def start_game
-    loop do
-      board.print_board
-      first_turn
-      second_turn
-    end
-  rescue Interrupt
-    exit_game
-  end
-
   def first_turn
-    human1.throw(introduce_column(human1))
+    column = introduce_column(human1)
+    human1.throw(column, board)
     judge.check_for_winner(human1)
   end
 
   def second_turn
-    human2.throw(introduce_column(human2))
+    column = introduce_column(human2)
+    human2.throw(column, board)
     judge.check_for_winner(human2)
   end
 
@@ -72,15 +66,6 @@ class Game
       board.print_board
       puts "'#{input}' is not a correct column.\n\nIntroduce a column:"
     end
-  end
-
-  def ask_players_names
-    board.print_board
-    puts "Player 1 name:"
-    human1.name = STDIN.gets.chomp
-    board.print_board
-    puts "Player 2 name:"
-    human2.name = STDIN.gets.chomp
   end
 
   def restart_game
