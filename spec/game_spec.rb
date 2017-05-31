@@ -36,7 +36,8 @@ describe Game do
     it "asks player to introduce position again without printing board" do
       player = @game.human1
       column = "1"
-      expect(STDOUT).to receive(:puts).with("#{player.name}, introduce a column:")
+      expect(STDOUT).to receive(:puts)
+        .with("#{player.name}, introduce a column:")
       allow(STDIN).to receive(:gets).and_return(column)
       @game.retry_turn(player)
     end
