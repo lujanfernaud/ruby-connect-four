@@ -1,70 +1,66 @@
 require "spec_helper"
 
 describe Game do
-  before do
-    @game = Game.new
-  end
+  let(:game) { Game.new }
 
   describe "attributes" do
     it "has a board" do
-      expect(@game.board).to be_a(Board)
+      expect(game.board).to be_a(Board)
     end
 
     it "has human players" do
-      expect(@game.human1).to be_a(Player)
-      expect(@game.human2).to be_a(Player)
+      expect(game.human1).to be_a(Player)
+      expect(game.human2).to be_a(Player)
     end
 
     it "sends board to all players" do
-      players = [@game.human1, @game.human2]
-      players.each do |player|
-        expect(player.board).to respond_to(:grid)
-      end
+      players = [game.human1, game.human2]
+      players.each { |player| expect(player.board).to respond_to(:grid) }
     end
   end
 
   describe "#setup" do
     it "prints board, asks names and starts game" do
-      expect(@game.board).to receive(:print_board)
-      expect(@game).to receive(:ask_players_names)
-      expect(@game).to receive(:start_game)
-      @game.setup
+      expect(game.board).to receive(:print_board)
+      expect(game).to receive(:ask_players_names)
+      expect(game).to receive(:start_game)
+      game.setup
     end
   end
 
   describe "#retry_turn" do
     it "asks player to introduce position again without printing board" do
-      player = @game.human1
+      player = game.human1
       column = "1"
       expect(STDOUT).to receive(:puts)
         .with("#{player.name}, introduce a column:")
       allow(STDIN).to receive(:gets).and_return(column)
-      @game.retry_turn(player)
+      game.retry_turn(player)
     end
   end
 
   describe "#try_again" do
     before do
-      allow(@game).to receive(:loop).and_yield
+      allow(game).to receive(:loop).and_yield
     end
 
     it "restarts game if 'y'" do
       allow(STDIN).to receive(:gets).and_return("y")
-      expect(@game).to receive(:restart_game)
-      @game.try_again
+      expect(game).to receive(:restart_game)
+      game.try_again
     end
 
     it "exits game if 'n'" do
       allow(STDIN).to receive(:gets).and_return("n")
-      expect(@game).to receive(:exit_game)
-      @game.try_again
+      expect(game).to receive(:exit_game)
+      game.try_again
     end
 
     it "asks to type 'y' or 'n'" do
       allow(STDIN).to receive(:gets).and_return("maybe")
-      expect(@game.board).to receive(:print_board)
+      expect(game.board).to receive(:print_board)
       expect(STDOUT).to receive(:puts).with("Please type 'y' or 'n'.")
-      @game.try_again
+      game.try_again
     end
   end
 end
