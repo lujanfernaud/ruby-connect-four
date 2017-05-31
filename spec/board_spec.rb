@@ -2,8 +2,8 @@ require "spec_helper"
 
 describe Board do
   before do
-    @game   = Game.new
-    @board  = Board.new(@game)
+    @game  = Game.new
+    @board = Board.new(@game)
     @board.grid = [["-", "-", "-", "-", "-", "-", "O"],
                    ["-", "-", "-", "-", "-", "-", "X"],
                    ["-", "-", "-", "-", "-", "-", "O"],
