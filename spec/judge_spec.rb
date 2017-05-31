@@ -5,6 +5,7 @@ describe Judge do
   let(:player2) { Player.new(name: "Matz", mark: "O") }
   let(:players) { [player1, player2] }
   let(:game)    { Game.new(players) }
+  let(:printer) { game.printer }
   let(:judge)   { game.judge }
   let(:board)   { judge.board }
 
@@ -26,7 +27,7 @@ describe Judge do
                     ["-", "-", "-", "-", "O", "O", "O"],
                     ["-", "-", "-", "-", "O", "X", "X"],
                     ["X", "X", "X", "X", "O", "O", "X"]]
-      expect(board).to receive(:print_board)
+      expect(printer).to receive(:print_board)
       expect(STDOUT).to receive(:puts).with("Sandi WINS! Try again? (y/n)")
       expect(game).to receive(:try_again)
       judge.check_for_winner(player1)
@@ -39,7 +40,7 @@ describe Judge do
                     ["-", "-", "X", "O", "X", "O", "O"],
                     ["-", "X", "X", "X", "O", "X", "X"],
                     ["X", "O", "X", "X", "O", "O", "X"]]
-      expect(board).to receive(:print_board)
+      expect(printer).to receive(:print_board)
       expect(STDOUT).to receive(:puts).with("Matz WINS! Try again? (y/n)")
       expect(game).to receive(:try_again)
       judge.check_for_winner(player2)
@@ -52,7 +53,7 @@ describe Judge do
                     ["X", "O", "O", "X", "O", "X", "O"],
                     ["O", "X", "X", "O", "X", "O", "X"],
                     ["X", "O", "X", "O", "X", "O", "X"]]
-      expect(board).to receive(:print_board)
+      expect(printer).to receive(:print_board)
       expect(STDOUT).to receive(:puts)
         .with("There's no winner. Try again? (y/n)")
       expect(game).to receive(:try_again)

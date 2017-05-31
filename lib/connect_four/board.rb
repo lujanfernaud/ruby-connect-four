@@ -1,24 +1,17 @@
 require_relative "diagonals"
+require_relative "printer"
 
 class Board
   include Diagonals
 
   attr_accessor :grid
-  attr_reader   :diagonals, :reset, :game
+  attr_reader   :game, :diagonals, :printer
 
   def initialize(game)
-    @game = game
     create_grid
+    @game      = game
     @diagonals = DIAGONALS
-  end
-
-  def print_board
-    system "clear" or system "cls"
-    puts "\n"
-    print_game_title
-    puts "\n"
-    print_game_grid
-    puts "\n"
+    @printer   = Printer.new(self)
   end
 
   def position_mark_in_column(column, player)
@@ -37,7 +30,7 @@ class Board
   end
 
   def the_column_is_full(column, player)
-    print_board
+    printer.print_board
     puts "The column #{column} is full.\n\n"
     game.retry_turn(player)
   end
@@ -50,40 +43,5 @@ class Board
 
   def create_grid
     @grid = Array.new(6) { Array.new(7) { "-" } }
-  end
-
-  def print_game_title
-    puts "   #############################"
-    puts "   #                           #"
-    puts "   #         CONNECT 4         #"
-    puts "   #                           #"
-    puts "   #############################"
-  end
-
-  def print_game_grid
-    puts "     1 | 2 | 3 | 4 | 5 | 6 | 7"
-    puts "   -----------------------------"
-    print_row(0)
-    puts "   -----------------------------"
-    print_row(1)
-    puts "   -----------------------------"
-    print_row(2)
-    puts "   -----------------------------"
-    print_row(3)
-    puts "   -----------------------------"
-    print_row(4)
-    puts "   -----------------------------"
-    print_row(5)
-  end
-
-  def print_row(row)
-    grid[row].each.with_index do |_column, column_index|
-      print "   | " if column_index.zero?
-      print "   "   if (1..6).cover?(column_index)
-
-      print "#{grid[row][column_index]}"
-
-      print " |\n" if column_index == 6
-    end
   end
 end

@@ -1,8 +1,9 @@
 class Game
-  attr_reader :board, :judge, :players
+  attr_reader :board, :printer, :judge, :players
 
   def initialize(players)
     @board   = Board.new(self)
+    @printer = board.printer
     @judge   = Judge.new(self, board)
     @players = players
   end
@@ -42,7 +43,7 @@ class Game
   end
 
   def ask_for_column(player, print_board: true)
-    board.print_board if print_board
+    printer.print_board if print_board
     puts "#{player.name}, introduce a column:"
     check_inputted_column
   end
@@ -54,13 +55,13 @@ class Game
       return input if input =~ /^[1-7]$/
       exit_game    if input == "exit".downcase
 
-      board.print_board
+      printer.print_board
       puts "'#{input}' is not a correct column.\n\nIntroduce a column:"
     end
   end
 
   def type_yes_or_no
-    board.print_board
+    printer.print_board
     puts "Please type 'y' or 'n'."
   end
 

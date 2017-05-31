@@ -1,9 +1,10 @@
 class Judge
-  attr_reader :game, :board
+  attr_reader :game, :board, :printer
 
   def initialize(game, board)
-    @game  = game
-    @board = board
+    @game    = game
+    @board   = board
+    @printer = game.printer
   end
 
   def check_for_winner(last_player)
@@ -71,7 +72,7 @@ class Judge
   end
 
   def finish_game
-    board.print_board
+    printer.print_board
     puts "There's no winner. Try again? (y/n)"
     game.try_again
   end
@@ -81,7 +82,7 @@ class Judge
   end
 
   def the_winner_is(last_player)
-    board.print_board
+    printer.print_board
     case last_player.name
     when "Computer" then puts "Computer WINS! Try again? (y/n)"
     when "Human 1"  then puts "You WIN! Try again? (y/n)"

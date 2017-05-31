@@ -5,6 +5,7 @@ describe Game do
   let(:player2) { Player.new(name: "Matz", mark: "O") }
   let(:players) { [player1, player2] }
   let(:game)    { Game.new(players) }
+  let(:printer) { game.printer }
 
   describe "attributes" do
     it "has a board" do
@@ -57,7 +58,7 @@ describe Game do
 
     it "asks to type 'y' or 'n'" do
       allow(STDIN).to receive(:gets).and_return("maybe")
-      expect(game.board).to receive(:print_board)
+      expect(printer).to receive(:print_board)
       expect(STDOUT).to receive(:puts).with("Please type 'y' or 'n'.")
       game.try_again
     end

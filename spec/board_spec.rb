@@ -6,6 +6,7 @@ describe Board do
   let(:players) { [player1, player2] }
   let(:game)    { Game.new(players) }
   let(:board)   { Board.new(game) }
+  let(:printer) { board.printer }
 
   before do
     board.grid = [["-", "-", "-", "-", "-", "-", "O"],
@@ -17,27 +18,22 @@ describe Board do
   end
 
   describe "attributes" do
-    it "knows about :game" do
-      raise unless board.game
-    end
-
     it "allows reading and writing for :grid" do
       board.grid[0][1] = "X"
       expect(board.grid[0][1]).to eql("X")
       board.grid[0][1] = "-"
     end
 
+    it "allows reading for :game" do
+      raise unless board.game
+    end
+
     it "allows reading for :diagonals" do
       raise unless board.diagonals
     end
-  end
 
-  describe "#print_board" do
-    it "clears screen and puts board" do
-      expect(board).to receive(:system).with("clear")
-      expect(board).to receive(:system).with("cls")
-      expect(STDOUT).to receive(:puts).exactly(21).times
-      board.print_board
+    it "has a Printer object" do
+      expect(printer).to be_a(Printer)
     end
   end
 
@@ -70,7 +66,7 @@ describe Board do
   describe "#the_column_is_full" do
     it "prints board, error message and calls game.retry_turn" do
       column = 1
-      expect(board).to receive(:print_board)
+      expect(printer).to receive(:print_board)
       expect(STDOUT).to receive(:puts)
         .with("The column #{column} is full.\n\n")
       expect(game).to receive(:retry_turn).with(player1)
