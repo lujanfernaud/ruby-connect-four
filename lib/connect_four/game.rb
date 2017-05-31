@@ -16,7 +16,7 @@ class Game
 
   def retry_turn(player)
     column = ask_for_column(player, print_board: false)
-    player.throw(column, board)
+    board.position_mark_in_column(column, player)
     judge.check_for_winner(player)
   end
 
@@ -36,7 +36,7 @@ class Game
     loop do
       players.each do |player|
         column = ask_for_column(player)
-        player.throw(column, board)
+        board.position_mark_in_column(column, player)
         judge.check_for_winner(player)
       end
     end
@@ -52,8 +52,8 @@ class Game
     loop do
       input = STDIN.gets.chomp
 
-      return input if input =~ /^[1-7]$/
-      exit_game    if input == "exit".downcase
+      return input.to_i if input =~ /^[1-7]$/
+      exit_game         if input == "exit".downcase
 
       printer.print_board
       puts "'#{input}' is not a correct column.\n\nIntroduce a column:"
