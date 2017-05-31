@@ -1,16 +1,11 @@
 require "spec_helper"
 
 describe Judge do
-  let(:game)    { Game.new }
+  let(:player1) { Player.new(name: "Sandi", mark: "X") }
+  let(:player2) { Player.new(name: "Matz", mark: "O") }
+  let(:game)    { Game.new(player1, player2) }
   let(:judge)   { game.judge }
   let(:board)   { judge.board }
-  let(:player1) { game.human1 }
-  let(:player2) { game.human2 }
-
-  before do
-    player1.name = "Sandi"
-    player2.name = "Matz"
-  end
 
   describe "attributes" do
     it "has a Game object" do

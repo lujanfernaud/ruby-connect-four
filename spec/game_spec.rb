@@ -1,7 +1,9 @@
 require "spec_helper"
 
 describe Game do
-  let(:game) { Game.new }
+  let(:player1) { Player.new(name: "Sandi", mark: "X") }
+  let(:player2) { Player.new(name: "Matz", mark: "O") }
+  let(:game)    { Game.new(player1, player2) }
 
   describe "attributes" do
     it "has a board" do
@@ -12,25 +14,21 @@ describe Game do
       expect(game.human1).to be_a(Player)
       expect(game.human2).to be_a(Player)
     end
-
-    it "sends board to all players" do
-      players = [game.human1, game.human2]
-      players.each { |player| expect(player.board).to respond_to(:grid) }
-    end
   end
 
-  describe "#setup" do
-    it "prints board, asks names and starts game" do
+  describe "#start_game" do
+    it "prints board and gives turns to players" do
+      allow(game).to receive(:loop).and_yield
       expect(game.board).to receive(:print_board)
-      expect(game).to receive(:ask_players_names)
-      expect(game).to receive(:start_game)
-      game.setup
+      expect(game).to receive(:first_turn)
+      expect(game).to receive(:second_turn)
+      game.start_game
     end
   end
 
   describe "#retry_turn" do
     it "asks player to introduce position again without printing board" do
-      player = game.human1
+      player = player1
       column = "1"
       expect(STDOUT).to receive(:puts)
         .with("#{player.name}, introduce a column:")

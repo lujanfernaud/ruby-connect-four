@@ -1,9 +1,10 @@
 require "spec_helper"
 
 describe Board do
-  let(:game)   { Game.new }
-  let(:board)  { Board.new(game) }
-  let(:player) { game.human1 }
+  let(:player1) { Player.new(name: "Sandi", mark: "X") }
+  let(:player2) { Player.new(name: "Matz", mark: "O") }
+  let(:game)    { Game.new(player1, player2) }
+  let(:board)   { Board.new(game) }
 
   before do
     board.grid = [["-", "-", "-", "-", "-", "-", "O"],
@@ -41,12 +42,12 @@ describe Board do
 
   describe "#position_mark_in_column" do
     it "takes column and player as arguments" do
-      expect { board.position_mark_in_column(2, player) }.not_to raise_error
+      expect { board.position_mark_in_column(2, player1) }.not_to raise_error
     end
 
     it "checks what position is available in the column and places mark" do
       board.grid[5][1] = "X"
-      board.position_mark_in_column(2, player)
+      board.position_mark_in_column(2, player1)
       expect(board.grid[4][1]).to eql("X")
     end
   end
@@ -71,8 +72,8 @@ describe Board do
       expect(board).to receive(:print_board)
       expect(STDOUT).to receive(:puts)
         .with("The column #{column} is full.\n\n")
-      expect(game).to receive(:retry_turn).with(player)
-      board.the_column_is_full(column, player)
+      expect(game).to receive(:retry_turn).with(player1)
+      board.the_column_is_full(column, player1)
     end
   end
 
