@@ -1,7 +1,7 @@
 require "spec_helper"
 
 describe Player do
-  before :all do
+  before do
     @game   = Game.new
     @player = @game.human1
     @player.name = "Matz"
