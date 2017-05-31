@@ -38,6 +38,9 @@ class Board
   end
 
   def position_mark_in_column(column, player)
+    return the_column_is_full(column, player) unless
+      column_available?(column)
+
     grid.reverse.each do |row|
       next unless row[column - 1] == "-"
       row[column - 1] = player.mark
