@@ -1,5 +1,3 @@
-require "spec_helper"
-
 describe Printer do
   let(:player1) { Player.new(name: "Sandi", mark: "X") }
   let(:player2) { Player.new(name: "Matz", mark: "O") }
@@ -15,15 +13,23 @@ describe Printer do
   end
 
   describe "#print_board" do
-    it "prints board" do
-      expect(printer).to receive(:system).with("clear")
-      expect(printer).to receive(:system).with("cls")
-      expect(STDOUT).to receive(:puts).with("\n")
-      expect(printer).to receive(:print_game_title)
-      expect(STDOUT).to receive(:puts).with("\n")
-      expect(printer).to receive(:print_game_grid)
-      expect(STDOUT).to receive(:puts).with("\n")
+    before do
+      allow(printer).to receive(:system).with("clear")
+      allow(printer).to receive(:system).with("cls")
+      allow(printer).to receive(:puts).with("\n")
+      allow(printer).to receive(:print_game_title)
+      allow(printer).to receive(:puts).with("\n")
+      allow(printer).to receive(:print_game_grid)
+      allow(printer).to receive(:puts).with("\n")
       printer.print_board
+    end
+
+    it "prints title" do
+      expect(printer).to have_received(:print_game_title)
+    end
+
+    it "prints grid" do
+      expect(printer).to have_received(:print_game_grid)
     end
   end
 end
