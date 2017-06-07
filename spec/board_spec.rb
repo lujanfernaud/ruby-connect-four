@@ -1,11 +1,9 @@
-require "spec_helper"
-
 describe Board do
   let(:player1) { Player.new(name: "Sandi", mark: "X") }
   let(:player2) { Player.new(name: "Matz", mark: "O") }
   let(:players) { [player1, player2] }
   let(:game)    { Game.new(players) }
-  let(:board)   { Board.new(game) }
+  let(:board)   { described_class.new(game) }
   let(:printer) { board.printer }
 
   before do
@@ -52,25 +50,31 @@ describe Board do
   describe "#column_available?" do
     it "checks and returns 'true'" do
       column = 2
-      expect(board.column_available?(column)).to eql(true)
+      expect(board.column_available?(column)).to be(true)
       board.column_available?(column)
     end
 
     it "checks and returns 'false'" do
       column = 7
-      expect(board.column_available?(column)).to eql(false)
+      expect(board.column_available?(column)).to be(false)
       board.column_available?(column)
     end
   end
 
   describe "#the_column_is_full" do
-    it "prints board, error message and calls game.retry_turn" do
-      column = 1
-      expect(printer).to receive(:print_board)
-      expect(STDOUT).to receive(:puts)
+    let(:column) { 1 }
+
+    before do
+      allow(printer).to receive(:print_board)
+      allow(board).to receive(:puts)
         .with("The column #{column + 1} is full.\n\n")
-      expect(game).to receive(:retry_turn).with(player1)
+      allow(game).to receive(:retry_turn).with(player1)
+    end
+
+    it "prints 'The column 1 is full.'" do
       board.the_column_is_full(column, player1)
+      expect(board).to have_received(:puts)
+        .with("The column #{column + 1} is full.\n\n")
     end
   end
 
