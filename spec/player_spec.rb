@@ -1,8 +1,6 @@
-require "spec_helper"
-
 describe Player do
-  let(:player1) { Player.new(name: "Sandi", mark: "X") }
-  let(:player2) { Player.new(name: "Player 2", mark: "O") }
+  let(:player1) { described_class.new(name: "Sandi", mark: "X") }
+  let(:player2) { described_class.new(name: "Player 2", mark: "O") }
   let(:players) { [player1, player2] }
   let(:game)    { Game.new(players) }
   let(:board)   { game.board }
