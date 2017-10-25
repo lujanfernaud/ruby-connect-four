@@ -1,5 +1,9 @@
 # Ruby Connect Four
 
-Connect Four command line game in Ruby for the [Testing Ruby](https://www.theodinproject.com/courses/ruby-programming/lessons/testing-ruby) lesson of [The Odin Project](https://www.theodinproject.com).
+Connect Four command line game written in Ruby.
 
 It may be run with `ruby play.rb`
+
+## Author
+
+- [Luján Fernaud](https://github.com/lujanfernaud)
